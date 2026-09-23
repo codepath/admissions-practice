@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI110 Practice: Python Foundations | CodePath</title>
+<meta name="description" content="Free practice for the CodePath Applied AI Engineering placement assessment: lists and loops, functions, and classes in Python, with instant checks and hints.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../assets/practice.css">
+</head>
+<body>
+<main class="page">
+  <div class="wordmark">CODEPATH<span>*ORG</span></div>
+  <div class="eyebrow">AI110 practice &middot; Applied AI Engineering</div>
+  <h1>Python Foundations</h1>
+  <p class="lede">This page reviews programming basics that help on the placement assessment: lists and loops, functions, and classes. The practice problems use Python. Each module has a short review and a few small problems. The first time you run code, the page loads a Python checker. This can take a few seconds.</p>
+  <ul class="facts">
+    <li>3 short modules + 1 optional project</li>
+    <li>Practice only &mdash; nothing to submit</li>
+    <li>Your code runs in your browser</li>
+  </ul>
+
+  <ol class="how">
+    <li><strong>Solve</strong> each problem. Some ask what code prints. Others ask you to write or fix code.</li>
+    <li><strong>Check</strong> your answer. For code, the page runs small tests and shows which ones did not pass.</li>
+    <li><strong>Stuck?</strong> Get a hint. After a hint, you can see the answer.</li>
+  </ol>
+
+  <div class="clue"><span class="k">About AI tools</span>While you practice, you may ask an AI tool to explain an idea. But AI tools are not allowed on the real placement assessment, so make sure you can write the code on your own.</div>
+
+  <div data-progress></div>
+
+  <section class="section">
+    <h2>Module 1: Lists and loops</h2>
+    <p>A list stores many values under one name. A loop repeats the same code for each value. Together, they let your code work with any number of items.</p>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>Lists.</strong> A list stores values in order. Each value has a position, called an <em>index</em>. The first index is 0. The last index is <code>len(numbers) - 1</code>.</p>
+<pre>numbers = [3, 7, 2, 9]
+print(numbers[0])     # 3
+numbers[1] = 10       # change the second value
+numbers.append(5)     # add a value to the end
+print(numbers)        # [3, 10, 2, 9, 5]</pre>
+      <p><strong>Loops.</strong> A <code>for</code> loop runs the same code once for each item. It stops by itself after the last item.</p>
+<pre>for n in numbers:
+    print(n)               # each number, one per line
+
+for i in range(len(numbers)):
+    print(i, numbers[i])   # the index and the value
+
+for i, n in enumerate(numbers):
+    print(i, n)            # the same thing, a shorter way</pre>
+      <p><strong>Common patterns.</strong> You can add up values, search for a value, or build a new list. The <code>%</code> sign gives the remainder after dividing, so <code>n % 2 == 0</code> means <code>n</code> is even.</p>
+<pre>numbers = [3, 7, 2, 9]
+
+total = 0                  # 1. add up
+for n in numbers:
+    total += n
+print(total)               # 21
+
+found = False              # 2. search
+for n in numbers:
+    if n == 9:
+        found = True
+print(found)               # True
+
+evens = []                 # 3. build a new list
+for n in numbers:
+    if n % 2 == 0:
+        evens.append(n)
+print(evens)               # [2]</pre>
+      <p><strong>Watch out for:</strong></p>
+      <ul>
+        <li><strong>Off-by-one errors.</strong> <code>range(len(numbers) + 1)</code> goes one step past the end of the list, so <code>numbers[i]</code> causes an <code>IndexError</code>.</li>
+        <li><strong>Changing a list while you loop over it.</strong> Removing items inside the loop can make the loop skip items. Build a new list instead, like <code>evens</code> above.</li>
+        <li><strong>Empty lists.</strong> <code>numbers[0]</code> fails if the list is empty. Think about what your code should do when there are no items.</li>
+      </ul>
+    </details>
+    <div data-item="m1-trace"></div>
+    <div data-item="m1-min"></div>
+    <div data-item="m1-dedupe"></div>
+    <div data-item="m1-double"></div>
+    <div data-item="m1-range"></div>
+    <div data-item="m1-skip"></div>
+  </section>
+
+  <section class="section">
+    <h2>Module 2: Functions</h2>
+    <p>A function is a named block of code that does one job. It takes inputs, called parameters, and sends back a result with <code>return</code>. Functions let you write code once and use it many times.</p>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>Parameters and return values.</strong> The inputs of a function are called <em>parameters</em>. The <code>return</code> line sends a result back to the code that called the function. A function with no <code>return</code> gives back <code>None</code>.</p>
+<pre>def add(a, b):
+    return a + b
+
+result = add(3, 4)    # a is 3, b is 4
+print(result)         # 7</pre>
+      <p><strong>Scope.</strong> A variable made inside a function is a <em>local</em> variable. It only exists while the function runs. If you need the value outside the function, return it.</p>
+<pre>def square(x):
+    squared = x * x   # local variable
+    return squared
+
+print(squared)        # NameError: squared only exists inside square()</pre>
+      <p><strong>Break a problem into steps.</strong> When code gets long, split it into small functions. Each function does one clear step, and you can test each one by itself. This is called <em>decomposition</em>.</p>
+<pre>def get_average(nums):
+    return sum(nums) / len(nums)
+
+def is_passing(avg):
+    return avg &gt;= 60
+
+avg = get_average([70, 85, 55])
+print(is_passing(avg))   # True</pre>
+      <p><strong>Watch out for:</strong></p>
+      <ul>
+        <li><strong>Printing instead of returning.</strong> <code>print()</code> only shows a value on the screen. <code>return</code> gives the value back, so other code can use it.</li>
+        <li><strong>Using variables from outside the function.</strong> Pass the values in as parameters instead.</li>
+        <li><strong>Using the same name inside and outside a function.</strong> They are two different variables, which can be confusing.</li>
+        <li><strong>Changing a list that was passed in.</strong> If a function changes a list, the change stays after the function ends.</li>
+      </ul>
+    </details>
+    <div data-item="m2-evens"></div>
+    <div data-item="m2-sumlist"></div>
+    <div data-item="m2-steps"></div>
+    <div data-item="m2-combine"></div>
+    <div data-item="m2-scope"></div>
+    <div data-item="m2-mystery"></div>
+  </section>
+
+  <section class="section">
+    <h2>Module 3: Object-oriented basics</h2>
+    <p>Object-oriented programming is a way to keep data and the actions that use that data together. You already use objects: <code>"hello".upper()</code> and <code>my_list.append(5)</code> call methods on objects. In this module, you make your own.</p>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>Classes.</strong> A class is a plan for making objects. It lists the data each object stores, called <em>attributes</em>, and the actions it can do, called <em>methods</em>. A method is a function that belongs to a class.</p>
+<pre>class Dog:
+    def __init__(self, name):
+        self.name = name
+
+    def bark(self):
+        print(f"{self.name} says woof!")
+
+my_dog = Dog("Luna")
+my_dog.bark()         # Luna says woof!</pre>
+      <ul>
+        <li><code>__init__</code> is the <em>constructor</em>. It runs each time you make a new object.</li>
+        <li><code>self</code> means &ldquo;this object.&rdquo; <code>self.name</code> is the name stored in this dog.</li>
+        <li>An f-string, like <code>f"{self.name} says woof!"</code>, puts the values inside <code>{ }</code> into the text.</li>
+      </ul>
+      <p><strong>Each object has its own data.</strong> This data is called the object&rsquo;s <em>state</em>. Changing one object does not change another one.</p>
+<pre>dog1 = Dog("Luna")
+dog2 = Dog("Rex")
+dog1.name = "Nova"
+print(dog1.name)      # Nova
+print(dog2.name)      # Rex</pre>
+      <p><strong>Methods can change state.</strong> Each <code>Counter</code> below keeps its own <code>value</code>.</p>
+<pre>class Counter:
+    def __init__(self):
+        self.value = 0
+
+    def increment(self):
+        self.value += 1
+
+a = Counter()
+b = Counter()
+a.increment()
+a.increment()
+print(a.value)        # 2
+print(b.value)        # 0</pre>
+      <p><strong>Watch out for:</strong></p>
+      <ul>
+        <li><strong>Forgetting <code>self</code>.</strong> Every method needs <code>self</code> as its first parameter: <code>def increment(self):</code>, not <code>def increment():</code>. Inside a method, use <code>self.value</code> to reach the object&rsquo;s data.</li>
+        <li><strong>Forgetting the parentheses.</strong> <code>my_dog.bark()</code> runs the method. <code>my_dog.bark</code> without <code>()</code> does not.</li>
+      </ul>
+    </details>
+    <div data-item="m3-book"></div>
+    <div data-item="m3-progress"></div>
+    <div data-item="m3-account"></div>
+    <div data-item="m3-light"></div>
+    <div data-item="m3-two"></div>
+    <div data-item="m3-timer"></div>
+  </section>
+
+  <section class="section">
+    <h2>Module 4: Putting it together</h2>
+    <p>This last module is an open project that uses everything above. There is no checker and no answer to show, because there are many good ways to build it. Use a Python editor on your computer, like VS Code, or a free online Python editor. There is no time limit.</p>
+    <div data-item="m4-todo"></div>
+  </section>
+
+  <div class="done" data-done hidden>
+    <h2>You finished all the practice problems.</h2>
+    <p>Great work. You will use lists, loops, functions, and classes often in AI110. If you have time, try the to-do list project in Module 4.</p>
+  </div>
+
+  <p class="foot">CodePath admissions practice. This page does not affect your application.</p>
+</main>
+
+<script>
+window.PRACTICE = {
+  page: "ai110",
+  items: {
+
+    /* ---------- Module 1: Lists and loops ---------- */
+    "m1-trace": {
+      type: "text",
+      num: 1,
+      title: "Trace the code",
+      meta: "Predict the output",
+      body: '<p>Read the code. What does it print? Find the answer in your head or on paper.</p>' +
+            '<pre>values = [2, 4, 6, 8]\ntotal = 0\nfor v in values:\n    total += v\nprint(total)</pre>',
+      placeholder: "Type what it prints",
+      accept: ["20"],
+      misses: [
+        { answer: "8", feedback: "8 is the last value in the list. The loop adds every value to <code>total</code>." },
+        { answer: "0", feedback: "<code>total</code> starts at 0, but the loop adds to it before <code>print()</code> runs." },
+        { answer: "2 6 12 20", feedback: "<code>print(total)</code> is not indented, so it runs only once, after the loop ends." },
+        { answer: "2, 6, 12, 20", feedback: "<code>print(total)</code> is not indented, so it runs only once, after the loop ends." }
+      ],
+      hints: [
+        "Write down the value of <code>total</code> after each step of the loop. It starts at 0.",
+        "After the first step, <code>total</code> is 0 + 2 = 2. After the second step, it is 2 + 4 = 6.",
+        "Keep going: add 6, then add 8. <code>print()</code> runs once, after the loop."
+      ],
+      why: "The loop adds each value to <code>total</code>: 2 + 4 + 6 + 8 = 20. Then <code>print(total)</code> runs once."
+    },
+
+    "m1-min": {
+      type: "python",
+      num: 2,
+      title: "Find the minimum",
+      meta: "Write a function",
+      body: '<p>Write a function <code>find_min(nums)</code> that returns the smallest number in a list. Try to use a loop, not the built-in <code>min()</code> function.</p>' +
+            '<p>Example: <code>find_min([5, 1, 9, 2])</code> returns <code>1</code>. You can assume the list always has at least one number.</p>' +
+            '<p><strong>Challenge (not checked):</strong> What should happen if the list is empty? How could your function handle that?</p>',
+      starter: 'def find_min(nums):\n    # your code here\n    pass\n',
+      tests: [
+        { expr: "find_min([5, 1, 9, 2])", expect: "1" },
+        { expr: "find_min([2, 8, 6])", expect: "2" },
+        { expr: "find_min([7])", expect: "7" },
+        { expr: "find_min([4, -3, 0, -8])", expect: "-8" }
+      ],
+      hints: [
+        "Start by saving the first number: <code>smallest = nums[0]</code>.",
+        "Loop through the list. If a number is smaller than <code>smallest</code>, save it as the new <code>smallest</code>.",
+        "After the loop ends, <code>return smallest</code>. Check that the <code>return</code> line is not inside the loop."
+      ],
+      solution: 'def find_min(nums):\n    smallest = nums[0]\n    for n in nums:\n        if n < smallest:\n            smallest = n\n    return smallest\n',
+      why: "Start with the first number, then compare it with each number in the list. Each time you find a smaller one, keep it. If you start with 0 instead, the answer is wrong when every number is bigger than 0."
+    },
+
+    "m1-dedupe": {
+      type: "python",
+      num: 3,
+      title: "Remove duplicates",
+      meta: "Write a function",
+      body: '<p>Write a function <code>remove_duplicates(items)</code> that returns a <strong>new</strong> list with the duplicates removed. A duplicate is an extra copy of a value. Keep only the first copy of each value, and keep the items in their original order.</p>' +
+            '<p>Example: <code>remove_duplicates([3, 1, 3, 2, 1])</code> returns <code>[3, 1, 2]</code>.</p>' +
+            '<p>If the list is empty, return an empty list. Do not change the list that was passed in. Try to solve it without <code>set()</code>, so you practice loops and <code>if</code> checks.</p>',
+      starter: 'def remove_duplicates(items):\n    # your code here\n    pass\n',
+      tests: [
+        { expr: "remove_duplicates([3, 1, 3, 2, 1])", expect: "[3, 1, 2]" },
+        { expr: "remove_duplicates([1, 2, 3])", expect: "[1, 2, 3]" },
+        { expr: 'remove_duplicates(["a", "b", "a", "a"])', expect: '["a", "b"]' },
+        { expr: "remove_duplicates([])", expect: "[]" },
+        { label: "the list you pass in does not change", run: "nums = [5, 5, 6]\nremove_duplicates(nums)\nprint(nums)", stdout: "[5, 5, 6]" }
+      ],
+      hints: [
+        "Start with a new, empty list: <code>result = []</code>.",
+        "Loop through <code>items</code>. For each item, check if it is already in <code>result</code>: <code>if item not in result:</code>",
+        "If the item is not in <code>result</code> yet, append it. After the loop, <code>return result</code>."
+      ],
+      solution: 'def remove_duplicates(items):\n    result = []\n    for item in items:\n        if item not in result:\n            result.append(item)\n    return result\n',
+      why: "The new list gets each value only the first time you see it. You add values in the order you find them, so the order stays the same. <code>set()</code> also removes duplicates, but it does not keep the original order."
+    },
+
+    "m1-double": {
+      type: "text",
+      num: 4,
+      title: "Double each item",
+      meta: "Predict the output",
+      body: '<p>What will this code print?</p>' +
+            '<pre>nums = [1, 2, 3, 4]\nfor i in range(len(nums)):\n    nums[i] = nums[i] * 2\nprint(nums)</pre>',
+      placeholder: "Type what it prints",
+      accept: ["[2, 4, 6, 8]"],
+      misses: [
+        { answer: "[1, 2, 3, 4]", feedback: "The loop changes the list. <code>nums[i] = nums[i] * 2</code> saves the new value back into the list." },
+        { answer: "2, 4, 6, 8", feedback: "Close. <code>print()</code> shows a list with square brackets around it." },
+        { answer: "2 4 6 8", feedback: "Close. <code>print()</code> shows a list with square brackets and commas." }
+      ],
+      hints: [
+        "<code>range(len(nums))</code> gives the indexes 0, 1, 2, and 3.",
+        "Each step replaces <code>nums[i]</code> with double its value. The list itself changes.",
+        "<code>print()</code> shows the whole list, with square brackets."
+      ],
+      why: "The loop visits each index and doubles the value stored there. The list becomes <code>[2, 4, 6, 8]</code>, and <code>print()</code> shows it with square brackets."
+    },
+
+    "m1-range": {
+      type: "python",
+      num: 5,
+      title: "Count up to n",
+      meta: "Fix the bug",
+      body: '<p>This function should return a list of the numbers from 1 to <code>n</code>. For example, <code>count_up(4)</code> should return <code>[1, 2, 3, 4]</code>, and <code>count_up(0)</code> should return an empty list. The function has a bug. Find it and fix it.</p>',
+      starter: 'def count_up(n):\n    result = []\n    for i in range(1, n):\n        result.append(i)\n    return result\n',
+      tests: [
+        { expr: "count_up(4)", expect: "[1, 2, 3, 4]" },
+        { expr: "count_up(1)", expect: "[1]" },
+        { expr: "count_up(0)", expect: "[]" }
+      ],
+      hints: [
+        "Follow the loop by hand with <code>n</code> = 4. Which numbers does <code>range(1, 4)</code> give?",
+        "<code>range(1, 4)</code> gives 1, 2, and 3. It stops just before the second number, so 4 is not in the list.",
+        "Change the loop to <code>for i in range(1, n + 1):</code>"
+      ],
+      solution: 'def count_up(n):\n    result = []\n    for i in range(1, n + 1):\n        result.append(i)\n    return result\n',
+      why: "<code>range(start, stop)</code> stops just before <code>stop</code>. So <code>range(1, n)</code> never reaches <code>n</code>, and the list is one number short. This kind of bug is called an <em>off-by-one error</em>. <code>range(1, n + 1)</code> gives every number from 1 to <code>n</code>."
+    },
+
+    "m1-skip": {
+      type: "choice",
+      num: 6,
+      title: "Why are numbers skipped?",
+      meta: "Explain the bug",
+      body: '<p>This code should remove the even numbers from a list.</p>' +
+            '<pre>items = [1, 2, 3, 4]\nfor i in items:\n    if i % 2 == 0:\n        items.remove(i)\nprint(items)</pre>' +
+            '<p>With this list, it prints <code>[1, 3]</code>, which looks right. But with <code>[2, 4, 6, 8]</code>, it prints <code>[4, 8]</code>. Why does this code sometimes skip numbers?</p>',
+      options: [
+        { html: "The <code>remove()</code> method deletes every even number at once, so the loop has nothing left to check",
+          feedback: "<code>remove()</code> deletes only one item: the first one that matches the value you give it." },
+        { html: "When <code>remove()</code> deletes an item, the items after it move one place to the left, so the loop jumps over the next item", correct: true },
+        { html: "<code>i % 2 == 0</code> is only true for some even numbers",
+          feedback: "<code>i % 2 == 0</code> is true for every even number. The problem is which items the loop visits, not the check." }
+      ],
+      hints: [
+        "Follow the loop by hand with <code>[2, 4, 6, 8]</code>. Write down the list after each step.",
+        "After 2 is removed, the list is <code>[4, 6, 8]</code>. The loop now moves to position 1. Which number is at position 1?"
+      ],
+      why: "Removing an item while you loop over the same list changes the positions of the items that are left. The loop moves forward anyway, so it skips an item. A safer way is to build a new list with only the items you want to keep."
+    },
+
+    /* ---------- Module 2: Functions ---------- */
+    "m2-evens": {
+      type: "python",
+      num: 1,
+      title: "Count the even numbers",
+      meta: "Write a function",
+      body: '<p>Write a function <code>count_evens(nums)</code> that returns how many numbers in the list are even. An even number can be divided by 2 with nothing left over, like 4, 0, or -2.</p>' +
+            '<p>Example: <code>count_evens([3, 4, 6, 7, 10])</code> returns <code>3</code>. If the list is empty, return <code>0</code>.</p>',
+      starter: 'def count_evens(nums):\n    # your code here\n    pass\n',
+      tests: [
+        { expr: "count_evens([3, 4, 6, 7, 10])", expect: "3" },
+        { expr: "count_evens([1, 3, 5])", expect: "0" },
+        { expr: "count_evens([0, -2, 5])", expect: "2" },
+        { expr: "count_evens([])", expect: "0" }
+      ],
+      hints: [
+        "Start with a counter: <code>count = 0</code>.",
+        "Loop through each number. Inside the loop, check <code>if n % 2 == 0:</code>. The <code>%</code> sign gives the remainder after dividing.",
+        "When the check is true, add 1 to <code>count</code>. After the loop, <code>return count</code>."
+      ],
+      solution: 'def count_evens(nums):\n    count = 0\n    for n in nums:\n        if n % 2 == 0:\n            count += 1\n    return count\n',
+      why: "The loop checks every number. <code>n % 2 == 0</code> is True for even numbers, so <code>count</code> goes up by 1 for each one. Remember to return the count, not print it."
+    },
+
+    "m2-sumlist": {
+      type: "python",
+      num: 2,
+      title: "Debug the function",
+      meta: "Fix the bug",
+      body: '<p>This function should add up all the numbers in a list, but it has a bug. For example, <code>sum_list([2, 4, 6])</code> should return <code>12</code>. An empty list should return <code>0</code>. Find the bug and fix it.</p>',
+      starter: 'def sum_list(nums):\n    total = 0\n    for n in nums:\n        total = n\n    return total\n',
+      tests: [
+        { expr: "sum_list([2, 4, 6])", expect: "12" },
+        { expr: "sum_list([5])", expect: "5" },
+        { expr: "sum_list([10, -3])", expect: "7" },
+        { expr: "sum_list([])", expect: "0" }
+      ],
+      hints: [
+        "Follow the loop by hand with <code>[2, 4, 6]</code>. What is <code>total</code> after each step?",
+        "<code>total = n</code> replaces the total each time. You want to add <code>n</code> to the total.",
+        "Change that line to <code>total += n</code> (this is the same as <code>total = total + n</code>)."
+      ],
+      solution: 'def sum_list(nums):\n    total = 0\n    for n in nums:\n        total += n\n    return total\n',
+      why: "<code>total = n</code> replaced the total with the current number each time, so the function only returned the last number. <code>total += n</code> adds each number to the total."
+    },
+
+    "m2-steps": {
+      type: "python",
+      num: 3,
+      title: "Break it into steps",
+      meta: "Write two functions",
+      body: '<p>Write two small functions.</p>' +
+            '<ol><li><code>average(scores)</code> returns the average of a list of numbers: the total divided by how many numbers there are. You can assume the list is never empty.</li>' +
+            '<li><code>get_letter_grade(avg)</code> returns a letter grade as a string:' +
+            '<ul><li>90 or more &rarr; <code>"A"</code></li>' +
+            '<li>80 or more, but less than 90 &rarr; <code>"B"</code></li>' +
+            '<li>70 or more, but less than 80 &rarr; <code>"C"</code></li>' +
+            '<li>60 or more, but less than 70 &rarr; <code>"D"</code></li>' +
+            '<li>less than 60 &rarr; <code>"F"</code></li></ul></li></ol>' +
+            '<p>The last two lines of the code show how to use both functions together, to print a line like <code>Average: 84.0 &rarr; Grade: B</code>. They start with <code>#</code>, so Python skips them here. The tests check your two functions directly.</p>',
+      starter: 'def average(scores):\n    # return the average of the numbers in scores\n    pass\n\n\ndef get_letter_grade(avg):\n    # return "A", "B", "C", "D", or "F"\n    pass\n\n\n# avg = average([80, 85, 87])\n# print("Average:", avg, "→ Grade:", get_letter_grade(avg))\n',
+      tests: [
+        { expr: "average([80, 85, 87])", expect: "84.0" },
+        { expr: "average([90, 75])", expect: "82.5" },
+        { expr: "get_letter_grade(84.0)", expect: "'B'" },
+        { label: "get_letter_grade() for 95, 75, 65, 55", expr: "[get_letter_grade(g) for g in [95, 75, 65, 55]]", expect: "['A', 'C', 'D', 'F']" },
+        { label: "get_letter_grade() for 90, 80, 70, 60 (the edges)", expr: "[get_letter_grade(g) for g in [90, 80, 70, 60]]", expect: "['A', 'B', 'C', 'D']" }
+      ],
+      hints: [
+        "For <code>average()</code>, use <code>sum(scores)</code> and <code>len(scores)</code>.",
+        "For <code>get_letter_grade()</code>, use <code>if</code>, <code>elif</code>, and <code>else</code>. Check the highest grade first: <code>if avg &gt;= 90:</code> then <code>return \"A\"</code>.",
+        "Next, <code>elif avg &gt;= 80:</code> returns <code>\"B\"</code>, and so on down to 60. Use <code>else:</code> for <code>\"F\"</code>."
+      ],
+      solution: 'def average(scores):\n    return sum(scores) / len(scores)\n\n\ndef get_letter_grade(avg):\n    if avg >= 90:\n        return "A"\n    elif avg >= 80:\n        return "B"\n    elif avg >= 70:\n        return "C"\n    elif avg >= 60:\n        return "D"\n    else:\n        return "F"\n\n\n# avg = average([80, 85, 87])\n# print("Average:", avg, "→ Grade:", get_letter_grade(avg))\n',
+      why: "Each function does one small job. <code>average()</code> only does the math, and <code>get_letter_grade()</code> only picks the letter. Because the highest grade is checked first, each <code>elif</code> runs only when the grades above it did not match."
+    },
+
+    "m2-combine": {
+      type: "text",
+      num: 4,
+      title: "Functions calling functions",
+      meta: "Predict the output",
+      body: '<p>What will this code print?</p>' +
+            '<pre>def multiply(a, b):\n    return a * b\n\ndef combine(x, y):\n    result1 = multiply(x, y)\n    result2 = multiply(y, x + 1)\n    return result1 + result2\n\nprint(combine(2, 3))</pre>',
+      placeholder: "Type what it prints",
+      accept: ["15"],
+      misses: [
+        { answer: "12", feedback: "Look again at the second call. It is <code>multiply(y, x + 1)</code>, not <code>multiply(y, x)</code>." },
+        { answer: "13", feedback: "Python calculates <code>x + 1</code> before it calls <code>multiply()</code>. So the second call is <code>multiply(3, 3)</code>." }
+      ],
+      hints: [
+        "In <code>combine(2, 3)</code>, <code>x</code> is 2 and <code>y</code> is 3. Find each line one at a time. First find <code>result1 = multiply(2, 3)</code>.",
+        "For <code>result2</code>, calculate <code>x + 1</code> first. With <code>x</code> = 2, the call is <code>multiply(3, 3)</code>.",
+        "Add <code>result1</code> and <code>result2</code>."
+      ],
+      why: "<code>result1</code> is 2 &times; 3 = 6. <code>result2</code> is <code>multiply(3, 2 + 1)</code>, which is 3 &times; 3 = 9. The function returns 6 + 9 = 15."
+    },
+
+    "m2-scope": {
+      type: "choice",
+      num: 5,
+      title: "Where does the variable live?",
+      meta: "Explain the error",
+      body: '<p>This code causes an error. Why?</p>' +
+            '<pre>def create_message():\n    text = "Welcome to CodePath!"\n    return text\n\ncreate_message()\nprint(text)</pre>',
+      options: [
+        { html: "<code>text</code> is a local variable, so it only exists inside <code>create_message()</code>", correct: true },
+        { html: "A function with no parameters cannot return a value",
+          feedback: "A function does not need parameters to return a value. <code>create_message()</code> runs and returns the text with no problem." },
+        { html: "<code>create_message()</code> needs to be written without the parentheses",
+          feedback: "The parentheses are what make the function run. Without them, the function is not called at all." }
+      ],
+      hints: [
+        "Where is the variable <code>text</code> created: inside the function, or outside it?",
+        "Variables made inside a function only exist while the function runs. This is called local scope."
+      ],
+      why: "Python stops with a <code>NameError</code> because <code>text</code> was made inside the function, and it disappears when the function ends. To fix it, save the value that the function returns:<pre>message = create_message()\nprint(message)</pre>"
+    },
+
+    "m2-mystery": {
+      type: "text",
+      num: 6,
+      title: "Mystery function",
+      meta: "Predict the result",
+      body: '<p>Read the function. What does it do? Then answer: what does <code>mystery([1, 2, 3, 4, 5, 6])</code> return?</p>' +
+            '<pre>def mystery(nums):\n    total = 0\n    for n in nums:\n        if n % 2 == 0:\n            total += n\n    return total // 2</pre>' +
+            '<p>Note: <code>//</code> divides and drops the remainder. For example, <code>7 // 2</code> is <code>3</code>.</p>',
+      placeholder: "Type the return value",
+      accept: ["6"],
+      misses: [
+        { answer: "12", feedback: "12 is the total of the even numbers. Look at the last line: the function divides it by 2 before it returns." },
+        { answer: "10", feedback: "Look at the <code>if</code> line. Only even numbers are added to <code>total</code>, not every number." },
+        { answer: "1", feedback: "The function adds up the even numbers. It does not count them." },
+        { answer: "6.0", feedback: "Close. <code>//</code> gives a whole number when both numbers are whole numbers, so the result is 6, not 6.0." }
+      ],
+      hints: [
+        "Look at the <code>if</code> line. Which numbers get added to <code>total</code>?",
+        "Only the even numbers are added: 2 + 4 + 6 = 12.",
+        "The last line returns <code>total // 2</code>. What is 12 // 2?"
+      ],
+      why: "<code>mystery()</code> adds up the even numbers in the list, then divides that total by 2. Here the even numbers are 2, 4, and 6. Their total is 12, and 12 // 2 is 6."
+    },
+
+    /* ---------- Module 3: Object-oriented basics ---------- */
+    "m3-book": {
+      type: "python",
+      num: 1,
+      title: "Define and use a class",
+      meta: "Write a class",
+      body: '<p>Write a class called <code>Book</code> that stores a title and a number of pages.</p>' +
+            '<ul><li>The constructor (<code>__init__</code>) takes two parameters: <code>title</code> and <code>pages</code>. Save them as <code>self.title</code> and <code>self.pages</code>.</li>' +
+            '<li>Add a method <code>describe()</code> that prints one sentence in exactly this format: <code>The Hobbit has 310 pages.</code></li></ul>' +
+            '<pre>book1 = Book("The Hobbit", 310)\nbook1.describe()      # The Hobbit has 310 pages.</pre>' +
+            '<p>The tests check what <code>describe()</code> prints.</p>',
+      starter: 'class Book:\n    def __init__(self, title, pages):\n        # save title and pages on the object\n        pass\n\n    def describe(self):\n        # print a sentence like: The Hobbit has 310 pages.\n        pass\n',
+      tests: [
+        { label: 'Book("The Hobbit", 310).describe()', run: 'Book("The Hobbit", 310).describe()', stdout: "The Hobbit has 310 pages." },
+        { label: 'Book("Dune", 412).describe()', run: 'Book("Dune", 412).describe()', stdout: "Dune has 412 pages." },
+        { label: 'Book("Dune", 412).title', expr: 'getattr(Book("Dune", 412), "title", None)', expect: "'Dune'" },
+        { label: 'Book("Dune", 412).pages', expr: 'getattr(Book("Dune", 412), "pages", None)', expect: "412" }
+      ],
+      hints: [
+        "In <code>__init__</code>, save each parameter on the object, for example <code>self.title = title</code>.",
+        "Inside <code>describe()</code>, use <code>self.title</code> and <code>self.pages</code> to build the sentence.",
+        "An f-string makes this easy: <code>print(f\"{self.title} has {self.pages} pages.\")</code>"
+      ],
+      solution: 'class Book:\n    def __init__(self, title, pages):\n        self.title = title\n        self.pages = pages\n\n    def describe(self):\n        print(f"{self.title} has {self.pages} pages.")\n',
+      why: "<code>__init__</code> saves the title and pages on each new <code>Book</code> object. <code>describe()</code> reads those values through <code>self</code> and prints the sentence, so each book prints its own title and pages."
+    },
+
+    "m3-progress": {
+      type: "python",
+      num: 2,
+      title: "Change the object's state",
+      meta: "Add methods",
+      body: '<p>Add two methods to your <code>Book</code> class from question 1:</p>' +
+            '<ul><li><code>mark_page(page_number)</code> saves the page you are on now. It replaces any page you saved before. A new book starts at page 0.</li>' +
+            '<li><code>progress()</code> prints how much of the book you have read, as a percent. Round it to a whole number with <code>round()</code>, and print it in exactly this format: <code>You are 20% through The Hobbit.</code></li></ul>' +
+            '<pre>book1 = Book("The Hobbit", 310)\nbook1.mark_page(62)\nbook1.progress()      # You are 20% through The Hobbit.</pre>' +
+            '<p>Your <code>describe()</code> method should still work.</p>',
+      starter: 'class Book:\n    def __init__(self, title, pages):\n        # copy your code from question 1, and start at page 0\n        pass\n\n    def describe(self):\n        # copy your code from question 1\n        pass\n\n    def mark_page(self, page_number):\n        # save the page you are on now\n        pass\n\n    def progress(self):\n        # print a sentence like: You are 20% through The Hobbit.\n        pass\n',
+      tests: [
+        { label: 'Book("The Hobbit", 310), mark_page(62), progress()', run: 'b = Book("The Hobbit", 310)\nb.mark_page(62)\nb.progress()', stdout: "You are 20% through The Hobbit." },
+        { label: 'Book("Dune", 412), progress() with no page marked', run: 'b = Book("Dune", 412)\nb.progress()', stdout: "You are 0% through Dune." },
+        { label: 'Book("Matilda", 240), mark_page(80), progress()', run: 'b = Book("Matilda", 240)\nb.mark_page(80)\nb.progress()', stdout: "You are 33% through Matilda." },
+        { label: 'Book("Dune", 412), mark_page(100), mark_page(206), progress()', run: 'b = Book("Dune", 412)\nb.mark_page(100)\nb.mark_page(206)\nb.progress()', stdout: "You are 50% through Dune." },
+        { label: 'Book("The Hobbit", 310).describe() still works', run: 'Book("The Hobbit", 310).describe()', stdout: "The Hobbit has 310 pages." }
+      ],
+      hints: [
+        "In <code>__init__</code>, add one more attribute for the current page, for example <code>self.current_page = 0</code>.",
+        "<code>mark_page()</code> only needs one line: <code>self.current_page = page_number</code>.",
+        "In <code>progress()</code>, the percent is <code>self.current_page / self.pages * 100</code>. Use <code>round()</code> to make it a whole number, then print it with an f-string."
+      ],
+      solution: 'class Book:\n    def __init__(self, title, pages):\n        self.title = title\n        self.pages = pages\n        self.current_page = 0\n\n    def describe(self):\n        print(f"{self.title} has {self.pages} pages.")\n\n    def mark_page(self, page_number):\n        self.current_page = page_number\n\n    def progress(self):\n        percent = round(self.current_page / self.pages * 100)\n        print(f"You are {percent}% through {self.title}.")\n',
+      why: "The object remembers the current page between method calls. That saved data is the object&rsquo;s state. <code>mark_page()</code> changes the state, and <code>progress()</code> reads it."
+    },
+
+    "m3-account": {
+      type: "python",
+      num: 3,
+      title: "Debug the code",
+      meta: "Fix the bug",
+      body: '<p>This class is for a simple bank account. A deposit should add money to the balance, but the code has a bug. Fix it so that the balance becomes <code>150</code>. The tests check the balance.</p>' +
+            '<p>Press <strong>Run and check</strong> first, and read the error message.</p>',
+      starter: 'class Account:\n    def __init__(self, balance):\n        self.balance = balance\n\n    def deposit(amount):\n        self.balance += amount\n\n\nacct = Account(100)\nacct.deposit(50)\nprint(acct.balance)\n',
+      tests: [
+        { label: "Account(100), deposit(50), then print the balance", run: "acct = Account(100)\nacct.deposit(50)\nprint(acct.balance)", stdout: "150" },
+        { label: "Account(20), deposit(5), deposit(10), then print the balance", run: "a = Account(20)\na.deposit(5)\na.deposit(10)\nprint(a.balance)", stdout: "35" },
+        { label: "two accounts: deposit 50 into the first one only", run: "a = Account(100)\nb = Account(100)\na.deposit(50)\nprint(a.balance, b.balance)", stdout: "150 100" }
+      ],
+      hints: [
+        "Read the error message. An <em>argument</em> is a value that you pass in to a method. How many arguments does the message say <code>deposit()</code> takes?",
+        "Python always passes the object itself to a method as its first argument. Compare <code>def deposit(amount):</code> with <code>def __init__(self, balance):</code>.",
+        "Change the method line to <code>def deposit(self, amount):</code>."
+      ],
+      solution: 'class Account:\n    def __init__(self, balance):\n        self.balance = balance\n\n    def deposit(self, amount):\n        self.balance += amount\n\n\nacct = Account(100)\nacct.deposit(50)\nprint(acct.balance)\n',
+      why: "Every method needs <code>self</code> as its first parameter. Without it, <code>deposit(amount)</code> can take only one value. But Python passes two: the object and 50. So <code>acct.deposit(50)</code> fails with a <code>TypeError</code>. With <code>def deposit(self, amount):</code>, the line <code>self.balance += amount</code> changes this account&rsquo;s balance."
+    },
+
+    "m3-light": {
+      type: "text",
+      num: 4,
+      title: "Objects and state",
+      meta: "Predict the output",
+      body: '<p>What will this code print?</p>' +
+            '<pre>class Light:\n    def __init__(self):\n        self.on = False\n\n    def toggle(self):\n        self.on = not self.on\n\nlamp = Light()\nlamp.toggle()\nprint(lamp.on)</pre>',
+      placeholder: "Type what it prints",
+      accept: ["True"],
+      misses: [
+        { answer: "False", feedback: "A new <code>Light</code> starts as False, but <code>toggle()</code> runs once before <code>print()</code>." }
+      ],
+      hints: [
+        "When a new <code>Light</code> is made, what is <code>self.on</code>?",
+        "<code>not</code> flips a True or False value: <code>not False</code> is <code>True</code>."
+      ],
+      why: "A new <code>Light</code> starts with <code>on</code> set to False. <code>toggle()</code> sets <code>on</code> to <code>not False</code>, which is True."
+    },
+
+    "m3-two": {
+      type: "text",
+      num: 5,
+      title: "Independent objects",
+      meta: "Predict the output",
+      body: '<p>This uses the same <code>Light</code> class. What will it print?</p>' +
+            '<pre>class Light:\n    def __init__(self):\n        self.on = False\n\n    def toggle(self):\n        self.on = not self.on\n\na = Light()\nb = Light()\na.toggle()\nprint(a.on, b.on)</pre>',
+      placeholder: "Type what it prints",
+      accept: ["True False"],
+      misses: [
+        { answer: "True, False", feedback: "Close. <code>print()</code> puts a space between the values, not a comma." },
+        { answer: "True True", feedback: "<code>b</code> is a different object. <code>a.toggle()</code> does not change <code>b</code>." },
+        { answer: "False False", feedback: "<code>a.toggle()</code> runs before <code>print()</code>, so <code>a.on</code> changes." },
+        { answer: "False True", feedback: "<code>print()</code> shows <code>a.on</code> first, then <code>b.on</code>." },
+        { answer: "True", feedback: "<code>print()</code> gets two values here, <code>a.on</code> and <code>b.on</code>. It shows both on one line." }
+      ],
+      hints: [
+        "<code>a</code> and <code>b</code> are two separate objects. Each one has its own <code>on</code> value.",
+        "Only <code>a.toggle()</code> runs. What happens to <code>b</code>?",
+        "<code>print()</code> with two values shows them on one line, with a space between them."
+      ],
+      why: "<code>a</code> and <code>b</code> each have their own <code>on</code> value. <code>a.toggle()</code> changes only <code>a</code>, so <code>a.on</code> is True and <code>b.on</code> is still False."
+    },
+
+    "m3-timer": {
+      type: "choice",
+      num: 6,
+      title: "Debugging practice",
+      meta: "Explain the error",
+      body: '<p>Why does this code cause an error?</p>' +
+            '<pre>class Timer:\n    def __init__(self):\n        self.seconds = 0\n\n    def tick(self):\n        seconds += 1\n\nt = Timer()\nt.tick()</pre>',
+      options: [
+        { html: "<code>Timer()</code> needs a starting number, like <code>Timer(0)</code>",
+          feedback: "<code>__init__</code> only takes <code>self</code>, and it sets <code>seconds</code> to 0 by itself. <code>Timer()</code> is correct." },
+        { html: "<code>tick()</code> is missing <code>self</code> in its definition",
+          feedback: "Look again: <code>def tick(self):</code> does have <code>self</code>. The problem is on the next line." },
+        { html: "Inside <code>tick()</code>, the code uses <code>seconds</code> instead of <code>self.seconds</code>, and there is no variable called <code>seconds</code> there", correct: true }
+      ],
+      hints: [
+        "Compare the line inside <code>__init__</code> with the line inside <code>tick()</code>. What is different?",
+        "To read or change an object&rsquo;s data inside a method, you need <code>self.</code> in front of the name."
+      ],
+      why: "<code>self.seconds</code> belongs to the object. <code>seconds</code> without <code>self.</code> is a new local variable inside <code>tick()</code>, and it has no value yet, so Python stops with an error (<code>UnboundLocalError</code>). The fix is <code>self.seconds += 1</code>."
+    },
+
+    /* ---------- Module 4: Putting it together (not checked) ---------- */
+    "m4-todo": {
+      type: "checklist",
+      title: "Build a simple to-do list app",
+      body: '<p>Write a small program that helps a person manage a list of tasks. It should store the tasks in a list, use functions to organize the code, and put the logic in a class. Start simple. You can add more later.</p>',
+      steps: [
+        "<strong>Plan it.</strong> Before you code, list the actions your program needs. For example: add a task, mark a task as complete, and show all tasks.",
+        "<strong>Write helper functions.</strong> Store the tasks in a list, and write one short function for each action. Think about what each function takes in, and what it returns or changes. Test each function by itself before you combine them.",
+        "<strong>Turn it into a class.</strong> Make a class, for example <code>TodoList</code>. Add a constructor (<code>__init__</code>), turn your functions into methods, then create an object and use it.",
+        "<strong>Extra (optional).</strong> Add a menu loop that lets the user choose an action, a way to remove tasks, a &ldquo;clear completed&rdquo; action, or a check that handles a task number that does not exist."
+      ],
+      after: '<p>You are done when one <code>TodoList</code> object can add tasks, mark them complete, and show them.</p>'
+    }
+  }
+};
+</script>
+<script src="../assets/practice.js"></script>
+</body>
+</html>

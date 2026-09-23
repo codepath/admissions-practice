@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CYB101 Practice: Research Puzzles | CodePath</title>
+<meta name="description" content="Free practice for the CodePath Cybersecurity placement assessment: three research puzzles with instant checks and hints.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../assets/practice.css">
+</head>
+<body>
+<main class="page">
+  <div class="wordmark">CODEPATH<span>*ORG</span></div>
+  <div class="eyebrow">CYB101 practice &middot; Cybersecurity</div>
+  <h1>Research Puzzles</h1>
+  <p class="lede">Each puzzle hides a passcode. You probably do not know the answers yet, and that is fine. In cybersecurity, you often have to find information you do not have. Search online, follow the clues, and see how far you get.</p>
+  <ul class="facts">
+    <li>3 puzzles</li>
+    <li>Practice only &mdash; nothing to submit</li>
+    <li>Nothing you type leaves your browser</li>
+  </ul>
+
+  <ol class="how">
+    <li><strong>Solve</strong> the puzzle using the clues and online search.</li>
+    <li><strong>Check</strong> your passcode. You will know right away if it is correct.</li>
+    <li><strong>Stuck?</strong> Get a hint. After a hint, you can see the answer.</li>
+  </ol>
+
+  <div data-progress></div>
+
+  <div data-item="colors"></div>
+  <div data-item="penguin"></div>
+  <div data-item="poem"></div>
+
+  <div class="done" data-done hidden>
+    <h2>You finished all three puzzles.</h2>
+    <p>Great work. Finding answers you do not know yet is one of the most important skills in cybersecurity, and it is a big part of CYB101.</p>
+  </div>
+
+  <p class="foot">CodePath admissions practice. This page does not affect your application.</p>
+</main>
+
+<script>
+window.PRACTICE = {
+  page: "cyb101",
+  items: {
+    colors: {
+      type: "text",
+      num: 1,
+      title: "Colors",
+      meta: "Passcode: one word, 7 letters",
+      body: '<p>Look at the clue below. What do these codes mean, and what word do they make together?</p>' +
+            '<div class="clue mono"><span class="k">Clue</span>#FF0000<br>#FFA500<br>#FFFF00<br>#008000<br>#0000FF<br>#4B0082<br>#EE82EE</div>',
+      placeholder: "Type the passcode",
+      accept: ["RAINBOW"],
+      lengthHint: true,
+      noun: "passcode",
+      hints: [
+        "Each line is a code. Try searching for the first one: what does <code>#FF0000</code> mean?",
+        "These are hex color codes. Write down the color for each line, in order.",
+        "Red, orange, yellow, green, blue, indigo, violet. Where do you see these colors together?"
+      ],
+      why: "Each code is a color: red, orange, yellow, green, blue, indigo, and violet. Together they make a rainbow."
+    },
+    penguin: {
+      type: "text",
+      num: 2,
+      title: "A famous penguin",
+      meta: "Passcode: one word, 3 letters",
+      body: '<p>The passcode is the name of a penguin.</p>' +
+            '<div class="clue"><span class="k">Clue</span><strong>Linus Torvalds</strong> chose this penguin to be a mascot.</div>',
+      placeholder: "Type the passcode",
+      accept: ["TUX"],
+      lengthHint: true,
+      noun: "passcode",
+      hints: [
+        "Start with the person. Who is Linus Torvalds, and what is he famous for?",
+        "Linus Torvalds created the Linux operating system. What does a penguin have to do with Linux?",
+        "Search for the name of the Linux mascot."
+      ],
+      why: "Linus Torvalds created Linux. The Linux mascot is a penguin named Tux."
+    },
+    poem: {
+      type: "text",
+      num: 3,
+      title: "The hidden poem",
+      meta: "Passcode: one word, 5 letters",
+      body: '<p>This is the hardest puzzle. A poem is hidden inside a file. The passcode is the <strong>last word</strong> of the poem.</p>' +
+            '<p>You never need to pay to solve this puzzle. If a website or program asks you for money, close it and try another one.</p>' +
+            '<div class="clue"><span class="k">Clue</span>Download the file: <a href="https://github.com/codepath/cyb101-file-storage/raw/refs/heads/main/clue.lrzip" target="_blank" rel="noopener">clue.lrzip</a></div>',
+      placeholder: "Type the passcode",
+      accept: ["CRASH"],
+      lengthHint: true,
+      noun: "passcode",
+      hints: [
+        "Your computer cannot open this file type by itself. You need a special program or a website to open it. Start by searching for what an <code>.lrzip</code> file is.",
+        "Search for “open lrzip file on Windows” or “open lrzip file on Mac”. One free program that opens it is called <code>lrzip</code>. On Windows, a website that opens <code>.lrzip</code> files may be easier than installing a program.",
+        "On a Mac or Linux computer, open the terminal. The terminal is an app where you type commands. On a Mac, it is called Terminal. After you install <code>lrzip</code>, type <code>cd Downloads</code> and press Enter. This goes to the folder with the file. Then type <code>lrunzip -o poem.txt clue.lrzip</code> and press Enter. Open the new file, <code>poem.txt</code>, to read the poem.",
+        "Trying different commands can change the clue file. If something looks wrong, delete the file and download it again."
+      ],
+      why: "The file holds a poem called “Waka Waka Bang Splat.” Most of its words are names for keyboard symbols. For example, “bang” means ! and “splat” means *. The last word is CRASH."
+    }
+  }
+};
+</script>
+<script src="../assets/practice.js"></script>
+</body>
+</html>
