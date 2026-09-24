@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WEB102 Practice: Sea Monster JavaScript | CodePath</title>
+<meta name="description" content="Free practice for CodePath Web Development: the JavaScript behind the Sea Monster Crowdfunding prework website, with the same game data, instant checks, and hints.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../assets/practice.css">
+</head>
+<body>
+<main class="page">
+  <div class="wordmark">CODEPATH<span>*ORG</span></div>
+  <div class="eyebrow">WEB102 practice &middot; Web Development</div>
+  <h1>Sea Monster JavaScript</h1>
+  <p class="lede">The WEB102 <em>prework</em> is a small project that you do before the course starts. In it, you build a website for Sea Monster Crowdfunding. <em>Crowdfunding</em> means that many people each give a small amount of money to pay for a new project. On this website, the projects are new games. On this page, you practice the JavaScript behind the website. You use the same game data, and your code runs in your browser.</p>
+
+  <ol class="how">
+    <li><strong>Solve</strong> each problem. Most ask you to write a short JavaScript function. Others ask you to read code.</li>
+    <li><strong>Check</strong> your answer. For code, the page runs small tests and shows which ones did not pass.</li>
+    <li><strong>Stuck?</strong> Get a hint. After a hint, you can see the answer.</li>
+  </ol>
+
+  <div class="note"><span class="k">About the code boxes</span>The code boxes run JavaScript, but they cannot show a web page. So the questions about the page itself, like buttons and game cards, ask you to read code. In every code box, <code>GAMES_JSON</code> is already loaded, so do not create it again. The tests check the value that your function returns. <code>console.log()</code> does not show anything here.</div>
+
+  <div data-progress></div>
+
+  <section class="section">
+    <h2>The game data</h2>
+    <p>The Sea Monster website shows 11 games. In the prework, the data about these games is in a file called <code>games.js</code>. The prework also gives you <em>starter code</em>: code that is already written for you, with comments that say what to add. The starter code reads this data and makes a list of objects called <code>GAMES_JSON</code>. Here are the first two games:</p>
+    <div class="clue mono"><span class="k">The start of GAMES_JSON</span>const GAMES_JSON = [<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Heroes Of Mythic Americas",<br>&nbsp;&nbsp;&nbsp;&nbsp;pledged: 1572,<br>&nbsp;&nbsp;&nbsp;&nbsp;goal: 10000,<br>&nbsp;&nbsp;&nbsp;&nbsp;backers: 9<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Cube Monster",<br>&nbsp;&nbsp;&nbsp;&nbsp;pledged: 29446,<br>&nbsp;&nbsp;&nbsp;&nbsp;goal: 20000,<br>&nbsp;&nbsp;&nbsp;&nbsp;backers: 321<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;// ... and 9 more games<br>];</div>
+    <p>On this page, each game has four properties. <code>name</code> is the name of the game. <code>pledged</code> is how much money people have promised to give so far, in dollars. <code>goal</code> is how much money the game needs, in dollars. <code>backers</code> is how many people have promised to give money. In the prework, each game also has a description and an image.</p>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>Objects.</strong> An object stores related values together. Each value has a name, called a <em>property</em>. Use a dot to read a property.</p>
+<pre>const game = {
+  name: "Cube Monster",
+  pledged: 29446,
+  goal: 20000,
+  backers: 321
+};
+console.log(game.name);      // Cube Monster
+console.log(game.backers);   // 321</pre>
+      <p><strong>A list of objects.</strong> <code>GAMES_JSON</code> is an <em>array</em>: a list of values in order. Each value in it is one game object. Each value has a position, called an <em>index</em>. The first index is 0.</p>
+<pre>console.log(GAMES_JSON.length);    // 11
+console.log(GAMES_JSON[0].name);   // Heroes Of Mythic Americas</pre>
+      <p><strong>Loops.</strong> A <code>for...of</code> loop runs the same code once for each game. In Challenge 3, you use a loop to make one card for each game.</p>
+<pre>for (const game of GAMES_JSON) {
+  console.log(game.name);   // each name, one per line
+}</pre>
+      <p><strong>Template literals.</strong> A template literal is a string inside backticks (<code>`</code>), not quotes. JavaScript replaces each <code>${...}</code> with a value.</p>
+<pre>const game = GAMES_JSON[0];
+const text = `${game.name} has ${game.backers} backers.`;
+console.log(text);   // Heroes Of Mythic Americas has 9 backers.</pre>
+      <p><strong>The page (the DOM).</strong> The <em>DOM</em> (Document Object Model) is how JavaScript sees the elements on a web page. In the prework, you use it to find elements, make new ones, and add them to the page. An element inside another element is called its <em>child</em>.</p>
+<pre>const gamesContainer = document.getElementById("games-container");
+const card = document.createElement("div");   // make a new div
+card.classList.add("game-card");              // give it a class
+card.innerHTML = `&lt;h3&gt;${game.name}&lt;/h3&gt;`;     // put HTML inside it
+gamesContainer.appendChild(card);             // add it to the page</pre>
+    </details>
+    <div data-item="d-index"></div>
+    <div data-item="d-delete"></div>
+    <div data-item="d-card"></div>
+  </section>
+
+  <section class="section">
+    <h2>Numbers for the stats section</h2>
+    <p>At the top of the Sea Monster website, three cards show numbers about all the games: the total number of contributions, the total money raised, and the number of games. In Challenge 4, you find the first two numbers with <code>reduce()</code>. The number of games is <code>GAMES_JSON.length</code>.</p>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>Arrow functions.</strong> An arrow function is a short way to write a function. These two functions do the same thing:</p>
+<pre>function addOne(n) {
+  return n + 1;
+}
+
+// the same function, written as an arrow function
+const addOneArrow = (n) =&gt; n + 1;</pre>
+      <p><strong>reduce().</strong> <code>reduce()</code> visits each item in a list and combines all the items into one value. You give it two things: a function, and a start value. The function gets the result so far (here called <code>total</code>) and the next item. It returns the new result.</p>
+<pre>const nums = [5, 10, 20];
+const sum = nums.reduce((total, n) =&gt; total + n, 0);
+console.log(sum);   // 35
+
+// step by step: 0 + 5 = 5, then 5 + 10 = 15, then 15 + 20 = 35</pre>
+      <p>With a list of objects, add one property from each object:</p>
+<pre>const games = [{ goal: 100 }, { goal: 400 }];
+const allGoals = games.reduce((total, game) =&gt; total + game.goal, 0);
+console.log(allGoals);   // 500</pre>
+      <p><strong>Numbers with commas.</strong> On the website, big numbers have commas, like 1,234,567. The method <code>toLocaleString()</code> adds them: <code>(1234567).toLocaleString("en-US")</code> gives <code>"1,234,567"</code>. The tests on this page only check the number, so you do not need <code>toLocaleString()</code> here.</p>
+      <p><strong>Watch out for:</strong></p>
+      <ul>
+        <li><strong>Forgetting the start value.</strong> Without the <code>0</code> at the end, <code>reduce()</code> uses the first item as the start. With a list of objects, the result is wrong. With an empty list, it causes an error.</li>
+        <li><strong>Using <code>GAMES_JSON</code> inside your function.</strong> The tests also call your function with other, smaller lists. Use the parameter <code>games</code> instead. A <em>parameter</em> is an input of a function. Here, <code>games</code> is the list that the tests pass in to your function.</li>
+        <li><strong>Printing instead of returning.</strong> <code>console.log()</code> only shows a value. The tests check the value that your function returns.</li>
+      </ul>
+    </details>
+    <div data-item="s-backers"></div>
+    <div data-item="s-pledged"></div>
+  </section>
+
+  <section class="section">
+    <h2>Funded and unfunded games</h2>
+    <p>The website has three buttons. They show only the unfunded games, only the funded games, or all the games. In Challenge 5, you use <code>filter()</code> to find the unfunded games and the funded games. Use this rule for every question on this page:</p>
+    <div class="clue"><span class="k">The rule</span>A game is <strong>unfunded</strong> when <code>pledged &lt; goal</code>.<br>A game is <strong>funded</strong> when <code>pledged &gt;= goal</code>. So a game that reaches its goal exactly is funded.</div>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>filter().</strong> <code>filter()</code> makes a <strong>new</strong> array with only the items that you want to keep. You give it a function that returns <code>true</code> (keep the item) or <code>false</code> (do not keep it). The items stay in the same order.</p>
+<pre>const nums = [4, 15, 8, 23];
+const big = nums.filter((n) =&gt; n &gt; 10);
+console.log(big);    // [15, 23]
+console.log(nums);   // [4, 15, 8, 23] (filter() does not change the original array)</pre>
+      <p>With a list of objects, check a property of each object:</p>
+<pre>const popular = GAMES_JSON.filter((game) =&gt; game.backers &gt;= 1000);
+// the games with 1000 backers or more</pre>
+      <p><strong>Comparisons.</strong> <code>&lt;</code> means &ldquo;less than.&rdquo; <code>&gt;=</code> means &ldquo;greater than or equal to.&rdquo; <code>&gt;</code> without the <code>=</code> is false when the two numbers are equal.</p>
+      <p><strong>On the website.</strong> Each button has an <em>event listener</em>: code that waits for a click, then runs a function. For example, <code>filterUnfundedOnly()</code> first removes all the game cards with <code>deleteChildElements()</code>. Then it adds cards for the unfunded games only.</p>
+      <p><strong>Watch out for:</strong></p>
+      <ul>
+        <li><strong>Returning names instead of games.</strong> These questions ask for the game objects. The tests compare the whole objects.</li>
+        <li><strong>Curly braces without <code>return</code>.</strong> An arrow function with curly braces needs the word <code>return</code>: <code>(game) =&gt; { return game.backers &gt;= 1000; }</code>. Without curly braces, it returns the value by itself: <code>(game) =&gt; game.backers &gt;= 1000</code>.</li>
+      </ul>
+    </details>
+    <div data-item="f-unfunded"></div>
+    <div data-item="f-funded"></div>
+    <div data-item="f-click"></div>
+  </section>
+
+  <section class="section">
+    <h2>Describe the company</h2>
+    <p>At the top of the website, a short text describes Sea Monster Crowdfunding. In Challenge 6, you add a sentence about the unfunded games. First you count them. Then you build the sentence with a template literal and the ternary operator.</p>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>Counting with filter().</strong> The <code>length</code> of an array is the number of items in it. So if you use <code>filter()</code> and then <code>.length</code>, you get the number of items that match.</p>
+<pre>const nums = [4, 15, 8, 23];
+const count = nums.filter((n) =&gt; n &gt; 10).length;
+console.log(count);   // 2</pre>
+      <p><strong>The ternary operator.</strong> The ternary operator is a short <code>if...else</code> that gives back a value. It has three parts: a condition, a value for when the condition is true, and a value for when it is false.</p>
+<pre>// condition ? valueIfTrue : valueIfFalse
+const backers = 1;
+const word = backers === 1 ? "backer" : "backers";
+console.log(`${backers} ${word}`);   // 1 backer</pre>
+      <p>The ternary line does the same job as this code:</p>
+<pre>let word;
+if (backers === 1) {
+  word = "backer";
+} else {
+  word = "backers";
+}</pre>
+      <p><strong>Template literals.</strong> Use <code>${...}</code> to put values into one sentence. Remember the backticks (<code>`</code>).</p>
+<pre>const count = 3;
+const text = `There are ${count} new games.`;
+console.log(text);   // There are 3 new games.</pre>
+      <p><strong>Watch out for:</strong></p>
+      <ul>
+        <li><strong>Zero.</strong> In English, use the plural with 0: &ldquo;0 games,&rdquo; not &ldquo;0 game.&rdquo; Use the singular only when the count is exactly 1.</li>
+        <li><strong>Small differences.</strong> The tests compare the whole sentence. The spaces, the capital letters, and the period must match exactly.</li>
+      </ul>
+    </details>
+    <div data-item="c-count"></div>
+    <div data-item="c-sentence"></div>
+  </section>
+
+  <section class="section">
+    <h2>Top two games</h2>
+    <p>The website also shows the two games with the most money pledged. In Challenge 7, the starter code sorts the games for you. Then you use destructuring to get the first two. Here, you write the sort yourself.</p>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>Sorting with a compare function.</strong> <code>sort()</code> puts the items of an array in order. To sort numbers or objects, give it a <em>compare function</em>. The function gets two items, <code>a</code> and <code>b</code>. If it returns a negative number, <code>a</code> goes first. If it returns a positive number, <code>b</code> goes first.</p>
+<pre>const nums = [20, 5, 90];
+nums.sort((a, b) =&gt; b - a);
+console.log(nums);   // [90, 20, 5] (highest first)</pre>
+      <p><strong>sort() changes the original array.</strong> To keep the original list the same, sort a copy. The spread operator (<code>...</code>) makes a copy of an array:</p>
+<pre>const nums = [20, 5, 90];
+const sorted = [...nums].sort((a, b) =&gt; b - a);
+console.log(sorted);   // [90, 20, 5]
+console.log(nums);     // [20, 5, 90] (not changed)</pre>
+      <p><strong>Destructuring.</strong> Destructuring copies items from an array into variables, in one line.</p>
+<pre>const colors = ["red", "green", "blue"];
+const [first, second] = colors;
+console.log(first);    // red
+console.log(second);   // green</pre>
+      <p>In the prework, you also put <code>...</code> inside the destructuring. Question 2 asks what it does there.</p>
+      <p><strong>Watch out for:</strong></p>
+      <ul>
+        <li><strong>Sorting the original list.</strong> <code>sort()</code> changes the list that you call it on. In the prework, the starter code sorts <code>GAMES_JSON</code> itself. On this page, the tests pass other lists to your function, and they check that those lists do not change. So sort a copy.</li>
+        <li><strong>The order of <code>a</code> and <code>b</code>.</strong> <code>a - b</code> sorts from lowest to highest. <code>b - a</code> sorts from highest to lowest.</li>
+      </ul>
+    </details>
+    <div data-item="t-top"></div>
+    <div data-item="t-rest"></div>
+  </section>
+
+  <section class="section">
+    <h2>Build the full website</h2>
+    <p>This last part is optional. In the prework, you build the real Sea Monster website on your computer, with the same JavaScript that you practiced here. This page cannot see your code, and this part does not count in your progress.</p>
+    <div data-item="build"></div>
+  </section>
+
+  <div class="done" data-done hidden>
+    <h2>You finished all the practice problems.</h2>
+    <p>Great work. You used <code>reduce()</code>, <code>filter()</code>, template literals, the ternary operator, and destructuring with real game data. You will use these JavaScript skills often in WEB102. If you have time, build the full Sea Monster website on your computer.</p>
+  </div>
+
+  <p class="foot">CodePath admissions practice. This page does not affect your application.</p>
+</main>
+
+<script>
+/* The 11 games from games.js in the public starter repo (codepath/web102_prework).
+   The description and img fields are left out; every other value is exact. */
+var SEA_MONSTER_SETUP = "const GAMES_JSON = " + JSON.stringify([
+  { name: "Heroes Of Mythic Americas", pledged: 1572, goal: 10000, backers: 9 },
+  { name: "Cube Monster", pledged: 29446, goal: 20000, backers: 321 },
+  { name: "Zoo Tycoon: The Board Game", pledged: 442602, goal: 78480, backers: 3869 },
+  { name: "Deity Tarot", pledged: 109, goal: 8000, backers: 3 },
+  { name: "Camouflage | A hand-painting puzzle/adventure game", pledged: 698, goal: 5140, backers: 9 },
+  { name: "Beep Bapp Boom", pledged: 44, goal: 18133, backers: 2 },
+  { name: "Frosthaven", pledged: 69608, goal: 500000, backers: 3193 },
+  { name: "Mislight - An Adventure Game With A Small Touch Of Thriller", pledged: 1036, goal: 3099, backers: 32 },
+  { name: "How to Read Minds 2 Kit: Ellusionist x Peter Turner", pledged: 147975, goal: 10000, backers: 1039 },
+  { name: "A Wayfarer's Tale", pledged: 13039, goal: 1183, backers: 1446 },
+  { name: "Kingdom Death: Monster 1.5", pledged: 94139, goal: 100000, backers: 9264 }
+]) + ";";
+
+window.PRACTICE = {
+  page: "web102",
+  items: {
+
+    /* ---------- The game data (Challenges 2 and 3) ---------- */
+    "d-index": {
+      type: "text",
+      num: 1,
+      title: "Read the data",
+      meta: "Predict the value",
+      body: '<p>Use the start of <code>GAMES_JSON</code> above. What is the value of this code?</p>' +
+            '<pre>GAMES_JSON[1].name</pre>',
+      placeholder: "Type the value",
+      accept: ["Cube Monster"],
+      misses: [
+        { answer: "Heroes Of Mythic Americas", feedback: "That is <code>GAMES_JSON[0]</code>, the first game. Indexes start at 0, so <code>[1]</code> is the second game." },
+        { answer: "name", feedback: "<code>.name</code> reads the value of the <code>name</code> property. What is the name of that game?" }
+      ],
+      hints: [
+        "Indexes start at 0. Which game is at index 1?",
+        "<code>GAMES_JSON[1]</code> is the second game in the list. <code>.name</code> reads its name."
+      ],
+      why: "Indexes start at 0, so <code>GAMES_JSON[1]</code> is the second game. The dot reads the <code>name</code> property of that object: Cube Monster."
+    },
+
+    "d-delete": {
+      type: "choice",
+      num: 2,
+      title: "Clear the game cards",
+      meta: "Read the code",
+      body: '<p>In Challenge 2, the starter code gives you this function. What does <code>deleteChildElements(gamesContainer)</code> do?</p>' +
+            '<pre>function deleteChildElements(parent) {\n    while (parent.firstChild) {\n        parent.removeChild(parent.firstChild);\n    }\n}</pre>',
+      options: [
+        { html: "It removes <code>gamesContainer</code> itself from the page",
+          feedback: "It only removes the children: the things inside <code>parent</code>. <code>parent</code> itself stays on the page, so you can add new cards to it later." },
+        { html: "It removes only the first child, then stops",
+          feedback: "A <code>while</code> loop runs again and again while its condition is true. So it keeps removing the first child until there is no child left." },
+        { html: "It removes everything inside <code>gamesContainer</code>, one child at a time, until it is empty", correct: true },
+        { html: "It removes all the games from <code>GAMES_JSON</code>",
+          feedback: "This function only changes the page. The data in <code>GAMES_JSON</code> stays the same." }
+      ],
+      hints: [
+        "<code>parent.firstChild</code> is the first thing inside <code>parent</code>. When <code>parent</code> is empty, it is <code>null</code>, which counts as false.",
+        "Each time the loop runs, it removes the first child. When does the loop stop?"
+      ],
+      why: "While <code>parent</code> still has a first child, the loop removes it. When nothing is left, <code>parent.firstChild</code> is <code>null</code>, so the loop stops. The buttons in Challenge 5 call this function first, to remove the old cards before they add new ones."
+    },
+
+    "d-card": {
+      type: "choice",
+      num: 3,
+      title: "Build a game card",
+      meta: "Read the code",
+      body: '<p>In Challenge 3, you set the HTML of each game card with a template literal. What is the value of <code>html</code>?</p>' +
+            '<pre>const game = { name: "Cube Monster", backers: 321 };\nconst html = `&lt;h3&gt;${game.name}&lt;/h3&gt;&lt;p&gt;${game.backers} backers&lt;/p&gt;`;</pre>',
+      options: [
+        { html: "<code>&lt;h3&gt;${game.name}&lt;/h3&gt;&lt;p&gt;${game.backers} backers&lt;/p&gt;</code>",
+          feedback: "That would be true with normal quotes, like <code>\"...\"</code>. With backticks, JavaScript replaces each <code>${...}</code> with its value." },
+        { html: "<code>&lt;h3&gt;Cube Monster&lt;/h3&gt;&lt;p&gt;321 backers&lt;/p&gt;</code>", correct: true },
+        { html: "<code>&lt;h3&gt;game.name&lt;/h3&gt;&lt;p&gt;game.backers backers&lt;/p&gt;</code>",
+          feedback: "The <code>${ }</code> around <code>game.name</code> means &ldquo;use the value of <code>game.name</code>.&rdquo; So JavaScript puts in the value, not the words <code>game.name</code>." }
+      ],
+      hints: [
+        "The string is inside backticks, so it is a template literal.",
+        "In a template literal, each <code>${...}</code> is replaced with its value. What is the value of <code>game.name</code>?"
+      ],
+      why: "JavaScript replaces <code>${game.name}</code> with Cube Monster and <code>${game.backers}</code> with 321. In the prework, you set a card&rsquo;s <code>innerHTML</code> to a string like this, so the page shows the game&rsquo;s details."
+    },
+
+    /* ---------- Numbers for the stats section (Challenge 4) ---------- */
+    "s-backers": {
+      type: "javascript",
+      num: 1,
+      title: "Total contributions",
+      meta: "Write a function",
+      body: '<p>Write a function <code>totalBackers(games)</code> that returns the total number of backers for all the games in the list. The website shows this number as the total number of contributions.</p>' +
+            '<p>Use <code>reduce()</code>, like the prework does. (A <code>for</code> loop also passes the tests.) If the list is empty, return <code>0</code>.</p>',
+      setup: SEA_MONSTER_SETUP,
+      starter: 'function totalBackers(games) {\n    // add up the backers with reduce()\n}\n',
+      tests: [
+        { expr: "totalBackers(GAMES_JSON)", expect: 19187 },
+        { expr: 'totalBackers([{ name: "A", backers: 5 }, { name: "B", backers: 7 }])', expect: 12 },
+        { expr: "totalBackers([])", expect: 0 }
+      ],
+      hints: [
+        "Which property of each game holds the number of backers? You want to add that property for every game, starting from 0.",
+        "Look at the <code>reduce()</code> example in the review above. The function that you give to <code>reduce()</code> gets the total so far and the next game. It returns <code>total + game.backers</code>. The start value is <code>0</code>.",
+        "Put it together: <code>return games.reduce((total, game) =&gt; total + game.backers, 0);</code>"
+      ],
+      solution: 'function totalBackers(games) {\n    return games.reduce((total, game) => total + game.backers, 0);\n}\n',
+      why: "<code>reduce()</code> starts at 0, then adds the backers of each game, one game at a time. The start value 0 also makes the empty list work: with no games, the result is 0."
+    },
+
+    "s-pledged": {
+      type: "javascript",
+      num: 2,
+      title: "Total money raised",
+      meta: "Write a function",
+      body: '<p>Write a function <code>totalPledged(games)</code> that returns the total amount pledged for all the games in the list, in dollars. The website shows this number as the total money raised.</p>' +
+            '<p>If the list is empty, return <code>0</code>.</p>',
+      setup: SEA_MONSTER_SETUP,
+      starter: 'function totalPledged(games) {\n    // add up the money pledged\n}\n',
+      tests: [
+        { expr: "totalPledged(GAMES_JSON)", expect: 800268 },
+        { expr: 'totalPledged([{ name: "A", pledged: 100 }, { name: "B", pledged: 250 }])', expect: 350 },
+        { expr: "totalPledged([])", expect: 0 }
+      ],
+      hints: [
+        "This is almost the same as question 1. Which property holds the money?",
+        "Add <code>game.pledged</code> instead of <code>game.backers</code>. Keep the start value <code>0</code>.",
+        "<code>return games.reduce((total, game) =&gt; total + game.pledged, 0);</code>"
+      ],
+      solution: 'function totalPledged(games) {\n    return games.reduce((total, game) => total + game.pledged, 0);\n}\n',
+      why: "The code is the same as question 1, but it adds <code>game.pledged</code>. For <code>GAMES_JSON</code>, the total is 800268. On the website, you can show it with a dollar sign and a comma, like $800,268. <code>toLocaleString()</code> adds the comma."
+    },
+
+    /* ---------- Funded and unfunded games (Challenge 5) ---------- */
+    "f-unfunded": {
+      type: "javascript",
+      num: 1,
+      title: "Unfunded games",
+      meta: "Write a function",
+      body: '<p>Write a function <code>getUnfunded(games)</code> that returns a new array with only the unfunded games. A game is unfunded when <code>pledged &lt; goal</code>.</p>' +
+            '<p>Return the game objects, not only their names. Keep the games in the same order as the list. If no game is unfunded, return an empty array.</p>',
+      setup: SEA_MONSTER_SETUP,
+      starter: 'function getUnfunded(games) {\n    // keep the unfunded games with filter()\n}\n',
+      tests: [
+        { label: "the names of the games in getUnfunded(GAMES_JSON)",
+          expr: "((r) => Array.isArray(r) ? r.map((g) => g && typeof g === 'object' ? g.name : g) : r)(getUnfunded(GAMES_JSON))",
+          expect: ["Heroes Of Mythic Americas", "Deity Tarot", "Camouflage | A hand-painting puzzle/adventure game", "Beep Bapp Boom", "Frosthaven", "Mislight - An Adventure Game With A Small Touch Of Thriller", "Kingdom Death: Monster 1.5"] },
+        { expr: 'getUnfunded([{ name: "A", pledged: 50, goal: 100 }, { name: "B", pledged: 100, goal: 100 }])',
+          expect: [{ name: "A", pledged: 50, goal: 100 }] },
+        { expr: 'getUnfunded([{ name: "C", pledged: 300, goal: 100 }])', expect: [] },
+        { expr: "getUnfunded([])", expect: [] },
+        { label: "the list you pass in does not change",
+          expr: '(function () { const list = [{ name: "A", pledged: 50, goal: 100 }, { name: "B", pledged: 100, goal: 100 }]; getUnfunded(list); return list.map((g) => g.name); })()',
+          expect: ["A", "B"] }
+      ],
+      hints: [
+        "Use <code>games.filter()</code>. It keeps each game for which your function returns <code>true</code>.",
+        "Which comparison is true for an unfunded game? Read the rule above.",
+        "<code>return games.filter((game) =&gt; game.pledged &lt; game.goal);</code>"
+      ],
+      solution: 'function getUnfunded(games) {\n    return games.filter((game) => game.pledged < game.goal);\n}\n',
+      why: "<code>filter()</code> checks each game and keeps it only when <code>game.pledged &lt; game.goal</code> is true. It returns a new array, so <code>GAMES_JSON</code> does not change. In <code>GAMES_JSON</code>, 7 of the 11 games are unfunded."
+    },
+
+    "f-funded": {
+      type: "javascript",
+      num: 2,
+      title: "Funded games",
+      meta: "Fix the bug",
+      body: '<p>This function should return a new array with only the funded games, but it has a bug. A game is funded when <code>pledged &gt;= goal</code>.</p>' +
+            '<p>Press <strong>Run and check</strong> first, and read which test does not pass. Then fix the bug.</p>',
+      setup: SEA_MONSTER_SETUP,
+      starter: 'function getFunded(games) {\n    return games.filter((game) => game.pledged > game.goal);\n}\n',
+      tests: [
+        { label: "the names of the games in getFunded(GAMES_JSON)",
+          expr: "((r) => Array.isArray(r) ? r.map((g) => g && typeof g === 'object' ? g.name : g) : r)(getFunded(GAMES_JSON))",
+          expect: ["Cube Monster", "Zoo Tycoon: The Board Game", "How to Read Minds 2 Kit: Ellusionist x Peter Turner", "A Wayfarer's Tale"] },
+        { expr: 'getFunded([{ name: "A", pledged: 50, goal: 100 }, { name: "B", pledged: 100, goal: 100 }])',
+          expect: [{ name: "B", pledged: 100, goal: 100 }] },
+        { expr: 'getFunded([{ name: "C", pledged: 300, goal: 100 }])', expect: [{ name: "C", pledged: 300, goal: 100 }] },
+        { expr: "getFunded([])", expect: [] },
+        { label: "the list you pass in does not change",
+          expr: '(function () { const list = [{ name: "A", pledged: 50, goal: 100 }, { name: "B", pledged: 100, goal: 100 }]; getFunded(list); return list.map((g) => g.name); })()',
+          expect: ["A", "B"] }
+      ],
+      hints: [
+        "Look at game B in the test that did not pass. It has <code>pledged: 100</code> and <code>goal: 100</code>. Is it funded? Read the rule above.",
+        "<code>100 &gt; 100</code> is false. You need a comparison that is also true when the two numbers are equal.",
+        "Change <code>&gt;</code> to <code>&gt;=</code>."
+      ],
+      solution: 'function getFunded(games) {\n    return games.filter((game) => game.pledged >= game.goal);\n}\n',
+      why: "A game that reaches its goal exactly is funded. <code>&gt;</code> is false when <code>pledged</code> and <code>goal</code> are equal, so game B was missing. <code>&gt;=</code> is also true for the equal case. Now every game is in exactly one list: <code>getUnfunded()</code> or <code>getFunded()</code>."
+    },
+
+    "f-click": {
+      type: "choice",
+      num: 3,
+      title: "Connect a button",
+      meta: "Read the code",
+      body: '<p>In Challenge 5, you connect each button to a function. What does the second line do?</p>' +
+            '<pre>const unfundedBtn = document.getElementById("unfunded-btn");\nunfundedBtn.addEventListener("click", filterUnfundedOnly);</pre>',
+      options: [
+        { html: "It runs <code>filterUnfundedOnly()</code> one time, right away, when the page loads",
+          feedback: "<code>addEventListener()</code> saves the function for later. It does not run it now." },
+        { html: "It clicks the button for the user",
+          feedback: "It does not click anything. It waits for a person to click the button." },
+        { html: "It runs <code>filterUnfundedOnly()</code> each time someone clicks the button", correct: true },
+        { html: "It changes the text on the button to <code>click</code>",
+          feedback: "<code>\"click\"</code> is the name of the event to wait for. The text on the button does not change." }
+      ],
+      hints: [
+        "An <em>event</em> is something that happens on the page, like a click. An event listener waits for an event.",
+        "An <em>argument</em> is a value that you pass in to a function. The first argument, <code>\"click\"</code>, is the event. The second argument is the function to run when that event happens."
+      ],
+      why: "<code>addEventListener()</code> connects an event to a function. After this line, each click on the button runs <code>filterUnfundedOnly()</code>. There are no parentheses after <code>filterUnfundedOnly</code>, because you pass the function itself, and the page runs it later. With parentheses, the function would run right away, only once."
+    },
+
+    /* ---------- Describe the company (Challenge 6) ---------- */
+    "c-count": {
+      type: "javascript",
+      num: 1,
+      title: "Count the unfunded games",
+      meta: "Write a function",
+      body: '<p>Write a function <code>countUnfunded(games)</code> that returns how many games in the list are unfunded. Use the same rule as before: a game is unfunded when <code>pledged &lt; goal</code>.</p>' +
+            '<p>If the list is empty, return <code>0</code>.</p>',
+      setup: SEA_MONSTER_SETUP,
+      starter: 'function countUnfunded(games) {\n    // return how many games are unfunded\n}\n',
+      tests: [
+        { expr: "countUnfunded(GAMES_JSON)", expect: 7 },
+        { expr: 'countUnfunded([{ name: "A", pledged: 100, goal: 100 }, { name: "B", pledged: 20, goal: 100 }])', expect: 1 },
+        { expr: 'countUnfunded([{ name: "C", pledged: 300, goal: 100 }])', expect: 0 },
+        { expr: "countUnfunded([])", expect: 0 }
+      ],
+      hints: [
+        "You already know how to get the unfunded games: use <code>filter()</code>.",
+        "The <code>length</code> of the filtered array is the count.",
+        "<code>return games.filter((game) =&gt; game.pledged &lt; game.goal).length;</code>"
+      ],
+      solution: 'function countUnfunded(games) {\n    return games.filter((game) => game.pledged < game.goal).length;\n}\n',
+      why: "<code>filter()</code> keeps only the unfunded games, and <code>.length</code> counts them. <code>reduce()</code> can also count: start at 0 and add 1 for each unfunded game."
+    },
+
+    "c-sentence": {
+      type: "javascript",
+      num: 2,
+      title: "Build the sentence",
+      meta: "Write a function",
+      body: '<p>Write a function <code>describeUnfunded(games)</code> that returns a sentence about the unfunded games in the list, in exactly this format:</p>' +
+            '<div class="clue mono"><span class="k">Format</span>We need your help to fund 7 games.</div>' +
+            '<ul><li>When exactly 1 game is unfunded, use <code>game</code>: <code>We need your help to fund 1 game.</code></li>' +
+            '<li>For every other number, including 0, use <code>games</code>: <code>We need your help to fund 0 games.</code></li></ul>' +
+            '<p>Use a template literal and the ternary operator. Count the unfunded games inside this function. You can copy your code from question 1 into this box.</p>',
+      setup: SEA_MONSTER_SETUP,
+      starter: 'function describeUnfunded(games) {\n    // 1. count the unfunded games\n    // 2. choose "game" or "games"\n    //    with the ternary operator\n    // 3. return the sentence, built\n    //    with a template literal\n}\n',
+      tests: [
+        { expr: "describeUnfunded(GAMES_JSON)", expect: "We need your help to fund 7 games." },
+        { expr: 'describeUnfunded([{ name: "A", pledged: 20, goal: 100 }, { name: "B", pledged: 100, goal: 100 }])', expect: "We need your help to fund 1 game." },
+        { expr: 'describeUnfunded([{ name: "A", pledged: 20, goal: 100 }, { name: "B", pledged: 5, goal: 100 }])', expect: "We need your help to fund 2 games." },
+        { expr: 'describeUnfunded([{ name: "C", pledged: 300, goal: 100 }])', expect: "We need your help to fund 0 games." }
+      ],
+      hints: [
+        "Follow the three steps in the comments. First, save the count in a variable: <code>const count = games.filter((game) =&gt; game.pledged &lt; game.goal).length;</code>",
+        "Next, choose the word: <code>const word = count === 1 ? \"game\" : \"games\";</code>",
+        "Last, build the sentence with backticks: <code>return `We need your help to fund ${count} ${word}.`;</code>"
+      ],
+      solution: 'function describeUnfunded(games) {\n    const count = games.filter((game) => game.pledged < game.goal).length;\n    const word = count === 1 ? "game" : "games";\n    return `We need your help to fund ${count} ${word}.`;\n}\n',
+      why: "The ternary operator picks <code>\"game\"</code> only when the count is exactly 1, and <code>\"games\"</code> for every other number, including 0. The template literal then puts the count and the word into the sentence."
+    },
+
+    /* ---------- Top two games (Challenge 7) ---------- */
+    "t-top": {
+      type: "javascript",
+      num: 1,
+      title: "Find the top two games",
+      meta: "Write a function",
+      body: '<p>Write a function <code>topTwoNames(games)</code> that returns an array with the <strong>names</strong> of the two games with the most money pledged. Put the highest one first: <code>[firstName, secondName]</code>.</p>' +
+            '<ul><li>Do not change the list that is passed in. Sort a copy.</li>' +
+            '<li>Use destructuring to get the first two games from the sorted copy.</li>' +
+            '<li>You can assume the list has at least two games, and no two games have the same amount pledged.</li></ul>',
+      setup: SEA_MONSTER_SETUP,
+      starter: 'function topTwoNames(games) {\n    // 1. copy the list, then sort the\n    //    copy by pledged, highest first\n    // 2. get the first two games\n    //    with destructuring\n    // 3. return an array with their names\n}\n',
+      tests: [
+        { expr: "topTwoNames(GAMES_JSON)", expect: ["Zoo Tycoon: The Board Game", "How to Read Minds 2 Kit: Ellusionist x Peter Turner"] },
+        { expr: 'topTwoNames([{ name: "A", pledged: 5 }, { name: "B", pledged: 50 }, { name: "C", pledged: 20 }])', expect: ["B", "C"] },
+        { expr: 'topTwoNames([{ name: "X", pledged: 10 }, { name: "Y", pledged: 30 }])', expect: ["Y", "X"] },
+        { label: "the list you pass in does not change",
+          expr: '(function () { const list = [{ name: "A", pledged: 5 }, { name: "B", pledged: 50 }, { name: "C", pledged: 20 }]; topTwoNames(list); return list.map((g) => g.name); })()',
+          expect: ["A", "B", "C"] }
+      ],
+      hints: [
+        "Make a copy with the spread operator, <code>[...games]</code>, then call <code>sort()</code> on the copy.",
+        "To sort from the highest amount to the lowest: <code>const sorted = [...games].sort((a, b) =&gt; b.pledged - a.pledged);</code> Then get the first two games: <code>const [first, second] = sorted;</code>",
+        "Return an array with both names: <code>return [first.name, second.name];</code>"
+      ],
+      solution: 'function topTwoNames(games) {\n    const sorted = [...games].sort((a, b) => b.pledged - a.pledged);\n    const [first, second] = sorted;\n    return [first.name, second.name];\n}\n',
+      why: "<code>[...games]</code> makes a copy, so sorting does not change the list that was passed in. <code>b.pledged - a.pledged</code> puts the highest amount first. Destructuring saves the first two games in <code>first</code> and <code>second</code>. In <code>GAMES_JSON</code>, they are Zoo Tycoon: The Board Game ($442,602) and How to Read Minds 2 Kit: Ellusionist x Peter Turner ($147,975)."
+    },
+
+    "t-rest": {
+      type: "choice",
+      num: 2,
+      title: "The rest of the games",
+      meta: "Read the code",
+      body: '<p>Here are the names of the top four games, from highest to lowest. (The names are shorter here.) What is the value of <code>otherGames</code>?</p>' +
+            '<pre>const names = ["Zoo Tycoon", "Read Minds 2", "Kingdom Death", "Frosthaven"];\nconst [firstGame, secondGame, ...otherGames] = names;</pre>',
+      options: [
+        { html: "<code>\"Kingdom Death\"</code>",
+          feedback: "<code>...otherGames</code> collects every item that is left, not only the next one. The result is always an array." },
+        { html: "<code>[\"Kingdom Death\", \"Frosthaven\"]</code>", correct: true },
+        { html: "<code>[\"Zoo Tycoon\", \"Read Minds 2\", \"Kingdom Death\", \"Frosthaven\"]</code>",
+          feedback: "<code>firstGame</code> and <code>secondGame</code> take the first two items. <code>otherGames</code> gets only the items after them." },
+        { html: "An error, because <code>...</code> can only copy an array",
+          feedback: "<code>...</code> also works inside destructuring. There, it collects the items that are left into a new array." }
+      ],
+      hints: [
+        "<code>firstGame</code> gets the first item, and <code>secondGame</code> gets the second item. Which items are left?",
+        "Inside destructuring, <code>...</code> collects all the items that are left into a new array."
+      ],
+      why: "<code>firstGame</code> is <code>\"Zoo Tycoon\"</code> and <code>secondGame</code> is <code>\"Read Minds 2\"</code>. The <code>...</code> before <code>otherGames</code> collects all the items that are left into a new array. (When <code>...</code> is used this way, it is also called the <em>rest</em> syntax.)"
+    },
+
+    /* ---------- Build the full website (not checked) ---------- */
+    "build": {
+      type: "checklist",
+      title: "Build the full website on your computer (optional)",
+      body: '<p>Click the box next to each step when you finish it. The starter code is free on GitHub: <a href="https://github.com/codepath/web102_prework" target="_blank" rel="noopener">github.com/codepath/web102_prework</a>.</p>',
+      steps: [
+        "<strong>Install the tools.</strong> <a href=\"https://code.visualstudio.com/\" target=\"_blank\" rel=\"noopener\">VS Code</a> is a free code editor. Add the <strong>Live Server</strong> extension to it. Live Server shows your website in the browser and updates the page each time you save. Also install <a href=\"https://git-scm.com/\" target=\"_blank\" rel=\"noopener\">Git</a>, a free tool that you use to download code projects and save your changes.",
+        "<strong>Get the starter code.</strong> Make a free account on <a href=\"https://github.com/\" target=\"_blank\" rel=\"noopener\">GitHub</a>. Then fork the <a href=\"https://github.com/codepath/web102_prework\" target=\"_blank\" rel=\"noopener\">starter repository</a> (the project folder on GitHub). To <em>fork</em> means to make your own copy on GitHub. Then clone your copy: use Git to download it to your computer.",
+        "<strong>Open the website.</strong> Open the folder in VS Code. Right-click <code>index.html</code> and choose <strong>Open with Live Server</strong>. Always open the website with Live Server. If you open <code>index.html</code> directly, the games do not load.",
+        "<strong>Complete Challenges 2 to 7.</strong> Write your code in <code>index.js</code>. The comments in the file say what each challenge needs.",
+        "<strong>Check your website.</strong> When the page opens, all 11 games appear. The stats at the top show numbers, the text describes the company, and the top two games appear. The three buttons show only the unfunded games, only the funded games, or all the games."
+      ],
+      after: '<p>You are done when every part of the website works in your browser.</p>'
+    }
+  }
+};
+</script>
+<script src="../assets/practice.js"></script>
+</body>
+</html>

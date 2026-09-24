@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CYB102 Practice: Terminal and Blue Team Basics | CodePath</title>
+<meta name="description" content="Free practice for the CodePath Cybersecurity placement assessment: three bash command challenges and a blue team scenario, with instant checks and hints.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../assets/practice.css">
+</head>
+<body>
+<main class="page">
+  <div class="wordmark">CODEPATH<span>*ORG</span></div>
+  <div class="eyebrow">CYB102 practice &middot; Cybersecurity</div>
+  <h1>Terminal and Blue Team Basics</h1>
+  <p class="lede">This page has two parts. First, you write three short commands for the terminal. The terminal is an app where you type commands to control a computer. Then, you read a story about a cyberattack and think like a blue team member. The blue team is the group of people who protect a company&rsquo;s computers and data. Search online when you need to. Finding information is a big part of cybersecurity.</p>
+
+  <ol class="how">
+    <li><strong>Solve</strong> each challenge by typing one full command. Then answer three questions about a story.</li>
+    <li><strong>Check</strong> your work. You will know right away if a command is correct. For the questions, the page checks the length.</li>
+    <li><strong>Stuck?</strong> Get a hint. After a hint, you can see the answer.</li>
+  </ol>
+
+  <div data-progress></div>
+
+  <section class="section">
+    <h2>Talking to the terminal</h2>
+    <p>Security work often happens in the terminal. The language of terminal commands is called <strong>bash</strong>. Most people use a computer by clicking buttons and windows. Bash lets you do more, like change who can open a file.</p>
+    <p>Each challenge below needs one command, on one line. Type the full command, the same way you would type it in the terminal. This page does not run your command. It checks that the command is written correctly.</p>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>Commands.</strong> A command starts with its name. After the name, you add the details it needs, like file names. Spaces separate the parts.</p>
+<pre>ls -l day.txt</pre>
+      <p>Here, <code>ls</code> is the command name. <code>-l</code> is an <em>option</em>: it changes how the command works. <code>day.txt</code> is a file name. File names are case-sensitive, so <code>day.txt</code> and <code>Day.txt</code> are two different files.</p>
+      <p><strong>echo</strong> prints text on the screen.</p>
+<pre>echo "Good morning"
+# prints on the screen: Good morning</pre>
+      <p>Quote marks around the text are a good habit. If your text has an apostrophe, like <code>I'm</code>, use double quotes: <code>"I'm here"</code>.</p>
+      <p><strong>Permissions.</strong> Every file has permissions. They decide who can <strong>read</strong> the file (open it), <strong>write</strong> to it (change it), and <strong>execute</strong> it (run it as a program). The command <code>ls -l</code> shows the permissions as letters, at the start of the line:</p>
+<pre>-rw-r--r--  1 ana  staff  24 Sep 23 10:00 day.txt</pre>
+      <p>Skip the first character. The next nine letters are three groups of three: one for the <strong>owner</strong> of the file, one for the file&rsquo;s <strong>group</strong> of users, and one for <strong>everyone else</strong>. In each group, <code>r</code> means read, <code>w</code> means write, <code>x</code> means execute, and <code>-</code> means &ldquo;not allowed.&rdquo;</p>
+<pre>-   rw-     r--     r--
+    owner   group   everyone else</pre>
+      <p>Here, the owner can read and write. The group and everyone else can only read.</p>
+      <p><strong>Your research.</strong> To solve the challenges, you also need to learn three things: how to send text into a file, how to write permissions with numbers, and how to use <code>cp</code>. Search online to find them. This is part of the practice. If you need help, use the hints.</p>
+    </details>
+    <div data-item="intro"></div>
+    <div data-item="sharpie"></div>
+    <div data-item="backup"></div>
+  </section>
+
+  <section class="section">
+    <h2>Thinking like a blue team member</h2>
+    <p>In this part, you think like a blue team member. Read the story below. It is about <strong>ransomware</strong>: harmful software that locks a company&rsquo;s files until the company pays money. Then answer three questions about the story.</p>
+    <p>There is no single right answer. This part is about thinking and research, so search online to learn more. Each answer needs at least 100 words. The page checks only the length, not what you write. It saves your writing in this browser, so you can return to it later.</p>
+    <div class="clue"><span class="k">The story</span>Happy Hippo Co. is a small company that makes toys. One sunny afternoon, the employees returned to their desks. They could not open any of their files. A message was on their screens. The attacker wanted a payment of 50 bitcoins. After the payment, the attacker would give them the decryption key, which unlocks the company&rsquo;s important data. The message said:<br><br><em>&ldquo;Your files have been encrypted and are no longer accessible. Please follow the instructions below to obtain the decryption key. Payment must be made within 72 hours, or the decryption key will be permanently deleted.&rdquo;</em><br><br>This means: the company cannot open its files. It must pay within 72 hours to get the key. If it does not pay, the key will be deleted forever.<br><br>The IT team quickly understood what happened. Ransomware had attacked their server and encrypted the company&rsquo;s important data. The team tried to isolate the server, but it was too late. The ransomware had already spread to all the other computers on the network.<br><br>The CEO (the head of the company) called a friend, Bob the White Hat Hacker. Bob is a cybersecurity expert. He studied the attack and wrote a report. The report said that the attack started when an employee clicked on a phishing email. This let the attacker enter the company&rsquo;s network without permission. Bob also said that the attacker used very strong encryption, called RSA-2048. He told the company not to pay the attackers. He said they should restore their data from their backups instead.<br><br>The company made backups of its data regularly. So the IT team restored the data quickly, and Happy Hippo Co. was soon working again.</div>
+    <details class="review">
+      <summary>Review: words in the story</summary>
+      <ul>
+        <li><strong>Encrypt:</strong> to change data into a secret code, so no one can read it without a key. The <strong>decryption key</strong> makes the data readable again. <strong>RSA-2048</strong> is a very strong kind of encryption. Without the key, it is almost impossible to unlock the files.</li>
+        <li><strong>Bitcoin:</strong> a kind of digital money. Attackers often ask for it because it is hard to know who received the payment.</li>
+        <li><strong>Phishing email:</strong> a fake email that tries to trick a person. It may ask them to click a link, open a file, or type a password.</li>
+        <li><strong>Server:</strong> a computer that stores files or runs programs for other computers. A <strong>network</strong> is a group of computers that are connected, so they can share files and data.</li>
+        <li><strong>IT team:</strong> the people who manage a company&rsquo;s computers and network.</li>
+        <li><strong>Isolate:</strong> to disconnect a computer from the network, so an attack cannot spread to other computers.</li>
+        <li><strong>Backup:</strong> an extra copy of data, kept in a safe place. To <strong>restore</strong> data means to use the backup to replace data that was lost or locked.</li>
+        <li><strong>White hat hacker:</strong> a security expert who uses hacking skills to protect people, not to harm them.</li>
+      </ul>
+    </details>
+    <div data-item="measures"></div>
+    <div data-item="phishing"></div>
+    <div data-item="isolate"></div>
+  </section>
+
+  <div class="done" data-done hidden>
+    <h2>You finished all the challenges and questions.</h2>
+    <p>Great work. In CYB102, you use the terminal often, and you learn to protect computers and data the way a blue team does.</p>
+  </div>
+
+  <p class="foot">CodePath admissions practice. This page does not affect your application.</p>
+</main>
+
+<script>
+(function () {
+  /* ---------- helpers for the three command checks ---------- */
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function code(s) { return "<code>" + esc(s) + "</code>"; }
+  function warn(msg) { return { state: "warn", msg: msg }; }
+  function bad(msg) { return { state: "bad", msg: msg }; }
+  function val(t) { return t.v; }
+
+  // Split a command line the way bash does: quotes group words, and > >> < | ; & ( ) are symbols.
+  // A number stuck to > (like 2>) is a stream number, not a word. A word that starts with # begins a comment.
+  function lex(s) {
+    var tokens = [], cur = null, q = false, quote = null, i = 0, c, v, fd;
+    function flush() { if (cur !== null) { tokens.push({ op: false, v: cur }); cur = null; } q = false; }
+    while (i < s.length) {
+      c = s.charAt(i);
+      if (quote === "'") {
+        if (c === "'") quote = null; else cur += c;
+        i += 1; continue;
+      }
+      if (quote === '"') {
+        if (c === '"') quote = null;
+        else if (c === "\\" && i + 1 < s.length && '"\\$`'.indexOf(s.charAt(i + 1)) !== -1) { cur += s.charAt(i + 1); i += 2; continue; }
+        else cur += c;
+        i += 1; continue;
+      }
+      if (c === "'" || c === '"') { quote = c; q = true; if (cur === null) cur = ""; i += 1; continue; }
+      if (c === "\\" && i + 1 < s.length) { cur = (cur || "") + s.charAt(i + 1); q = true; i += 2; continue; }
+      if (/\s/.test(c)) { flush(); i += 1; continue; }
+      if (c === "#" && cur === null) return { tokens: tokens, comment: true };
+      if (c === ">") {
+        fd = cur !== null && !q && /^\d+$/.test(cur) ? cur : null;
+        if (fd !== null) { cur = null; q = false; } else flush();
+        v = ">"; i += 1;
+        if (s.charAt(i) === ">") { v = ">>"; i += 1; }
+        else if (s.charAt(i) === "|") { i += 1; }
+        else if (s.charAt(i) === "&") { v = ">&"; i += 1; }
+        if (fd !== null && +fd !== 1) v = fd + v;
+        tokens.push({ op: true, v: v }); continue;
+      }
+      if (c === "&" && s.charAt(i + 1) === ">") {
+        flush();
+        v = s.charAt(i + 2) === ">" ? "&>>" : "&>";
+        tokens.push({ op: true, v: v }); i += v.length; continue;
+      }
+      if ("<|;&()".indexOf(c) !== -1) { flush(); tokens.push({ op: true, v: c }); i += 1; continue; }
+      cur = (cur || "") + c; i += 1;
+    }
+    if (quote) return { open: quote };
+    flush();
+    return { tokens: tokens };
+  }
+
+  var KNOWN = ["echo", "chmod", "cp", "cat", "mv", "touch", "printf", "ls", "cd", "nano", "vi", "vim", "chown", "chgrp", "chattr", "attrib", "icacls", "rm", "mkdir", "tee", "rsync", "scp", "dd", "ditto", "install", "cpio", "xcopy", "robocopy", "print", "say", "write", "type", "open", "less", "more", "head", "tail", "grep", "sed", "awk"];
+  var CURLY = "Use straight quote marks, like " + code("\"") + ", not curly ones, like &ldquo; &rdquo;. Some phones and apps change quote marks by themselves. Bash does not treat curly quote marks as quotes.";
+
+  // How many one-letter changes turn a into b (add, remove, change, or swap two letters next to each other).
+  function dist(a, b) {
+    var d = [], i, j, cost;
+    for (i = 0; i <= a.length; i++) d[i] = [i];
+    for (j = 0; j <= b.length; j++) d[0][j] = j;
+    for (i = 1; i <= a.length; i++) {
+      for (j = 1; j <= b.length; j++) {
+        cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+        d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+        if (i > 1 && j > 1 && a.charAt(i - 1) === b.charAt(j - 2) && a.charAt(i - 2) === b.charAt(j - 1)) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+      }
+    }
+    return d[a.length][b.length];
+  }
+
+  // Checks shared by all three challenges. Returns { err } or { t: tokens, starting with the command, comment }.
+  function start(raw, want, special) {
+    var s = raw.trim();
+    if (/^\$/.test(s)) return { err: warn("Do not type the " + code("$") + " at the start. The terminal shows " + code("$") + " when it is ready for a command. It is not part of the command.") };
+    var lx = lex(s);
+    if (lx.open && /[“”]/.test(s)) return { err: warn(CURLY) };
+    if (lx.open === "'") return { err: warn("Your quote marks do not match. In bash, an apostrophe (" + code("'") + ") also starts a quote. If your text has an apostrophe, like " + code("I'm") + ", put the whole text inside double quotes, like " + code("\"I'm here\"") + ".") };
+    if (lx.open) return { err: warn("Your quote marks do not match. Start and end the text with the same quote mark, like " + code("\"this\"") + ".") };
+    var t = lx.tokens;
+    if (t.length && t[t.length - 1].op && t[t.length - 1].v === ";") t = t.slice(0, -1);
+    if (t.length > 1 && !t[0].op && t[0].v === "sudo") t = t.slice(1);
+    var first = t.length && !t[0].op ? t[0].v : "";
+    if (first !== want) {
+      var low = first.toLowerCase();
+      var line = s.replace(/^sudo\s+/, ""), rest = line.slice(want.length);
+      if (low === want) return { err: warn("Bash commands are case-sensitive. Type " + code(want) + " in small (lowercase) letters.") };
+      if (line.slice(0, want.length).toLowerCase() === want && rest && (/^[^\sa-z]/i.test(rest) || /^[a-z]\S*\./i.test(rest))) return { err: warn("Put a space after " + code(want) + ".") };
+      if (special && special[low]) return { err: bad(special[low]) };
+      if (KNOWN.indexOf(low) !== -1) return { err: bad("This challenge uses " + code(want) + ", not " + code(first) + ". Start the command with " + code(want) + ".") };
+      if (dist(low, want) === 1) return { err: bad("Check the spelling of the command. This challenge uses " + code(want) + ".") };
+      return { err: bad("Type the full command. It starts with " + code(want) + ".") };
+    }
+    return { t: t, comment: !!lx.comment };
+  }
+
+  // Compares a typed file name with the expected one. A leading ./ ("this folder") is fine.
+  function fileState(typed, want) {
+    var f = typed.replace(/^\.\//, "");
+    if (f === want) return "ok";
+    if (!f) return "empty";
+    if (f.toLowerCase() === want.toLowerCase()) return "case";
+    if (f.toLowerCase() === want.replace(/\.txt$/, "").toLowerCase()) return "noext";
+    return "wrong";
+  }
+  function caseMsg(typed, want) {
+    return warn("File names are case-sensitive, so " + code(typed.replace(/^\.\//, "")) + " and " + code(want) + " are two different files. Check the capital letters.");
+  }
+  var NOEXT = "Type the whole file name, with " + code(".txt") + " at the end.";
+  var EXTRA = "Your command has extra text after the file name. The file name should be the last part of the command.";
+
+  function safe(fn) {
+    return function (raw) {
+      try { return fn(String(raw)); } catch (e) { return warn("Check your command and try again."); }
+    };
+  }
+
+  /* Challenge 1: echo "..." > intro.txt */
+  var WHY_ECHO = code("echo") + " prints your text. The " + code(">") + " symbol sends the text into " + code("intro.txt") + " instead of the screen, and it replaces everything that was in the file. " + code(">>") + " would keep the old text and add yours at the end. Any introduction is fine.";
+  var REDIR = /^\d*(>>?|>&)$|^&>>?$/;
+  var QUOTE_OPS = ["(", ")", ";", "&", "|", "<"];
+  function stripFlags(words) {
+    while (words.length && /^-[neE]+$/.test(words[0])) words.shift();
+    return words;
+  }
+  function checkEcho(raw) {
+    var r = start(raw, "echo");
+    if (r.err) return r.err;
+    var t = r.t, k = -1, i;
+    for (i = 1; i < t.length; i++) { if (t[i].op) { k = i; break; } }
+    var curly = /[“”]/.test(raw);
+    if (k === -1 && r.comment) return warn(curly ? CURLY : "In bash, a word that starts with " + code("#") + " begins a comment, so bash skips the rest of the line. Put your introduction inside quotes, like " + code("\"text\"") + ".");
+    if (k === -1) return warn("This command only prints your text on the screen. How can you send the text into the file instead?");
+    var op = t[k].v, next = t[k + 1];
+    var later = t.slice(k + 1).some(function (x) { return x.op && REDIR.test(x.v); });
+    if (curly && (later || QUOTE_OPS.indexOf(op) !== -1)) return warn(CURLY);
+    if (op === "(" || op === ")" || later && QUOTE_OPS.indexOf(op) !== -1) return warn("Put your introduction inside quotes, like " + code("\"text\"") + ". Without quotes, bash reads " + code(op) + " as a special symbol, not as part of your text.");
+    if (/^\d+>/.test(op)) return warn("A number right before " + code(">") + " changes what goes into the file. For example, " + code("2>") + " sends only error messages, not your text. Put a space before " + code(">") + ", or remove the number.");
+    if (op === ">>" || op === "&>>") return warn(code(op) + " adds your text to the end of the file and keeps the old text. This challenge asks you to replace the old text.");
+    if (op === "&>" || op === ">&" && !(next && !next.op && /^\d+$/.test(next.v))) return warn("In a real terminal, " + code(op) + " also sends your text into the file. But it sends error messages there too. This challenge asks you to use " + code(">") + ".");
+    if (op === "<") return warn(code("<") + " reads from a file. It does not write into one. Which symbol sends text into a file?");
+    if (op === "|" && next && !next.op && next.v === "tee") return warn(code("tee") + " also writes the text into a file, but this challenge asks you to use " + code(">") + ".");
+    if (op === "|") return warn(code("|") + " sends the text to another command, not into a file. Which symbol sends text into a file?");
+    if (op !== ">") return warn(code(op) + " does not send the text into a file. Which symbol does?");
+    var after = t.slice(k + 1);
+    if (!after.length || after[0].op) return warn("Add the file name after " + code(">") + ".");
+    var tail = after.slice(1);
+    if (tail.some(function (x) { return x.op; })) return warn(EXTRA);
+    // Bash also accepts the text after the file name, like: echo > intro.txt "Hi"
+    var words = stripFlags(t.slice(1, k).map(val)), front = false;
+    if (tail.length) {
+      if (words.length) return warn(EXTRA);
+      words = stripFlags(tail.map(val));
+      front = true;
+    }
+    var text = words.join(" ");
+    if (!text.trim()) return warn("Add your introduction between " + code("echo") + " and " + code(">") + ".");
+    var f = fileState(after[0].v, "intro.txt");
+    if (f === "empty") return warn("Add the file name after " + code(">") + ".");
+    if (f === "case") return caseMsg(after[0].v, "intro.txt");
+    if (f === "noext") return warn(NOEXT);
+    if (f === "wrong") return warn("Check the file name. Which file does this challenge ask you to change?");
+    return { ok: true, msg: "Now " + code("intro.txt") + " holds only your text: " + code(text.trim()) +
+      (front ? ". This order works too, but most people put the text before " + code(">") + "." : "") + "<br>" + WHY_ECHO };
+  }
+
+  /* Challenge 2: chmod with an octal mode that has no write bit */
+  var GROUPS = ["the owner", "the group", "everyone else"];
+  function joinList(a) {
+    if (a.length < 3) return a.join(" and ");
+    return a.slice(0, -1).join(", ") + ", and " + a[a.length - 1];
+  }
+  function letters(d3) {
+    return d3.split("").map(function (d) {
+      d = +d;
+      return (d & 4 ? "r" : "-") + (d & 2 ? "w" : "-") + (d & 1 ? "x" : "-");
+    }).join("");
+  }
+  function looksLikeFile(s) { return /\.txt$/i.test(s) || /permanent/i.test(s); }
+  function checkChmod(raw) {
+    var r = start(raw, "chmod");
+    if (r.err) return r.err;
+    var t = r.t.slice(1), i;
+    for (i = 0; i < t.length; i++) {
+      if (t[i].op) return warn("This command does not need " + code(t[i].v) + ". Type " + code("chmod") + ", then the permissions, then the file name.");
+    }
+    var a = t.map(val);
+    while (a.length && /^(-[Rvcf]+|--[a-z-]*)$/.test(a[0])) a.shift();
+    if (!a.length) return warn("Add the permissions and the file name after " + code("chmod") + ".");
+    if (a.length === 1) {
+      if (looksLikeFile(a[0]) && /^\d+\D/.test(a[0])) return warn("Put a space between the permissions and the file name.");
+      return looksLikeFile(a[0]) ? warn("Add the permissions before the file name.") : warn("Add the file name after the permissions.");
+    }
+    var mode = a[0], file = a[1];
+    if (looksLikeFile(mode) && !looksLikeFile(file)) return warn("Check the order. Type the permissions first, then the file name.");
+    if (a.length > 2) {
+      var lead = a.slice(0, -1);
+      if (!looksLikeFile(a[a.length - 1]) || lead.some(function (x) { return x && fileState(x, "permanent.txt") !== "wrong"; })) return warn(EXTRA);
+      if (lead.every(function (x) { return /^\d+$/.test(x); })) return warn("Type the digits together, with no spaces, like " + code(lead.join("")) + ".");
+      return warn("Your command has extra text before the file name. Type " + code("chmod") + ", then the permissions, then the file name.");
+    }
+    var f = fileState(file, "permanent.txt");
+    if (f === "case") return caseMsg(file, "permanent.txt");
+    if (f === "noext") return warn(NOEXT);
+    if (f !== "ok") return warn("Check the file name. Which file does this challenge ask you to change?");
+    if (/^[-dl]?([r-][w-][x-]){3}$/.test(mode)) return warn("Those are the letters that " + code("ls -l") + " shows. This challenge asks for octal notation, with numbers. Change each group of three letters into one digit.");
+    if (/^[ugoa]*[-+=][rwxXst]*(,[ugoa]*[-+=][rwxXst]*)*$/.test(mode)) return warn("That is symbolic notation, with letters. It works in a real terminal, but this challenge asks for octal notation, with numbers.");
+    if (/^\d+$/.test(mode) && /[89]/.test(mode)) return warn("Octal numbers use only the digits 0 to 7.");
+    if (/^\d+$/.test(mode) && !/^\d{3,4}$/.test(mode)) return warn("Use three digits: one for the owner, one for the group, and one for everyone else.");
+    if (!/^[0-7]{3,4}$/.test(mode)) return warn("Type the permissions in octal notation: three digits from 0 to 7.");
+    var d3 = mode.slice(-3), who = [];
+    for (i = 0; i < 3; i++) { if (+d3.charAt(i) & 2) who.push(GROUPS[i]); }
+    if (who.length) return warn("With " + code(mode) + ", " + joinList(who) + " can still write to the file. Which digits include write?");
+    return { ok: true, msg: code(mode) + " gives the permissions " + code(letters(d3)) + ". None of the digits includes write (2), so no one can write to " + code("permanent.txt") + "." +
+      (mode.length === 4 ? " The first of your four digits is for special settings. The last three are for the three groups." : "") +
+      " Remember: read is 4, write is 2, and execute is 1." };
+  }
+
+  /* Challenge 3: cp random.txt copy.txt */
+  var CP_SPECIAL = {
+    mv: code("mv") + " moves or renames a file, so " + code("random.txt") + " would be gone. This challenge asks for a copy. Use " + code("cp") + ".",
+    cat: code("cat") + " shows what is in a file. With " + code(">") + ", it can also copy text, but this challenge asks you to use " + code("cp") + ".",
+    copy: code("copy") + " is a Windows command. In bash, the command that copies a file is " + code("cp") + ".",
+    ln: code("ln") + " makes a link, which is another name for the same file. It is not a separate copy: if you change one, the other changes too. Use " + code("cp") + "."
+  };
+  function checkCp(raw) {
+    var r = start(raw, "cp", CP_SPECIAL);
+    if (r.err) return r.err;
+    var t = r.t.slice(1), i;
+    for (i = 0; i < t.length; i++) {
+      if (t[i].op) {
+        return warn(t[i].v === ">"
+          ? code("cp") + " does not need " + code(">") + ". Type the two file names after " + code("cp") + ", with a space between them."
+          : "This command does not need " + code(t[i].v) + ". Type " + code("cp") + ", then the two file names.");
+      }
+    }
+    var a = t.map(val);
+    while (a.length && /^(-[a-zA-Z]+|--[a-z-]*)$/.test(a[0])) a.shift();
+    if (!a.length) return warn("Add the file names after " + code("cp") + ".");
+    if (a.length === 1) return warn(code("cp") + " needs two file names: the file to copy, and the name of the new file.");
+    if (a.length > 2) return warn("Use only two file names: the file to copy, and the name of the new file.");
+    var src = a[0].replace(/^\.\//, ""), dst = a[1].replace(/^\.\//, "");
+    if (src.toLowerCase() === "copy.txt" && dst.toLowerCase() === "random.txt") return warn("Check the order. Which file already exists, and which file are you making?");
+    var sf = fileState(src, "random.txt"), df = fileState(dst, "copy.txt");
+    if (sf === "case") return caseMsg(src, "random.txt");
+    if (df === "case") return caseMsg(dst, "copy.txt");
+    if (sf === "noext" || df === "noext") return warn(NOEXT);
+    if (sf !== "ok") return warn("The first file name should be the file you want to copy. Which file already exists?");
+    if (df !== "ok") return warn("Check the name of the new file. What does the challenge ask you to call it?");
+    return { ok: true };
+  }
+
+  window.PRACTICE = {
+    page: "cyb102",
+    progressWord: "done",
+    items: {
+
+      /* ---------- Talking to the terminal ---------- */
+      intro: {
+        type: "text",
+        num: 1,
+        title: "Hello, my name is…",
+        meta: "Command: echo",
+        body: '<p>The file <code>intro.txt</code> has some old text in it. Write one command that <strong>replaces</strong> everything in <code>intro.txt</code> with a short introduction about you. Use the <code>echo</code> command.</p>',
+        placeholder: "Type the full command",
+        accept: ['echo "Hi, my name is Ana." > intro.txt'],
+        noun: "command",
+        validate: safe(checkEcho),
+        hints: [
+          "The <code>echo</code> command prints text. Search online for &ldquo;bash echo text to a file&rdquo;.",
+          "By itself, <code>echo</code> prints on the screen. A symbol after the text can send the text into a file instead. One symbol replaces the old text. Another one adds to it.",
+          "The form is <code>echo \"text\" &gt; file</code>. Put your introduction in place of <code>text</code>, and the file for this challenge in place of <code>file</code>."
+        ],
+        why: WHY_ECHO
+      },
+
+      sharpie: {
+        type: "text",
+        num: 2,
+        title: "Digital Sharpie",
+        meta: "Command: chmod",
+        body: '<p>A Sharpie is a marker pen. Its ink is permanent, so you cannot erase it. You want <code>permanent.txt</code> to be like that: no one can change it.</p>' +
+              '<p>Write one command that changes the file&rsquo;s <strong>permissions</strong> so that <strong>no one</strong> can write to (change) it. Use the <code>chmod</code> command with octal notation: one digit for each group.</p>' +
+              '<p>Right now, <code>ls -l</code> shows these permissions for the file:</p>' +
+              '<pre>-rwxrw-rw-  permanent.txt</pre>' +
+              '<p>Only write permission matters here. Read and execute permissions are not checked.</p>',
+        placeholder: "Type the full command",
+        accept: ["chmod 444 permanent.txt"],
+        noun: "command",
+        validate: safe(checkChmod),
+        hints: [
+          "Look at <code>-rwxrw-rw-</code>. Skip the first character, then split the rest into three groups of three letters. Which groups have a <code>w</code>?",
+          "Each group becomes one digit. Read is 4, write is 2, and execute is 1. Add the numbers for the permissions that you want to keep. Do not include write (2) in any group.",
+          "For example, a group that can only read is <code>4</code>. Type <code>chmod</code>, then three digits, then the file name."
+        ],
+        why: "In octal, each digit is one group: the owner, the group, and everyone else. Read is 4, write is 2, and execute is 1. <code>444</code> gives every group read only (<code>r--r--r--</code>), so no one can write to the file. Other digits also work, like <code>555</code> or <code>400</code>, if no digit includes write."
+      },
+
+      backup: {
+        type: "text",
+        num: 3,
+        title: "Make a backup copy",
+        meta: "Command: cp",
+        body: '<p>A <strong>backup</strong> is an extra copy of a file. If the first file is lost or damaged, you still have the copy.</p>' +
+              '<p>Write one command that makes a new file called <code>copy.txt</code>. It should be a copy of <code>random.txt</code>. Use the <code>cp</code> command.</p>',
+        placeholder: "Type the full command",
+        accept: ["cp random.txt copy.txt"],
+        noun: "command",
+        validate: safe(checkCp),
+        hints: [
+          "Search online for &ldquo;bash cp command&rdquo;. What does <code>cp</code> need after its name?",
+          "<code>cp</code> needs two file names. The first is a file that already exists. The second is the name of the new copy.",
+          "The form is <code>cp old-file new-file</code>. Which file already exists: <code>random.txt</code> or <code>copy.txt</code>?"
+        ],
+        why: "<code>cp</code> makes the second file an exact copy of the first file. <code>random.txt</code> already exists, so it comes first. <code>copy.txt</code> is the new file, so it comes second. After the command, both files are there."
+      },
+
+      /* ---------- Thinking like a blue team member ---------- */
+      measures: {
+        type: "writing",
+        num: 1,
+        title: "What security steps can Happy Hippo Co. take to lower the risk of future ransomware attacks?",
+        body: '<p>Think about steps that stop an attack before it starts, and steps that limit the damage if an attack still happens. Search online for ideas.</p>',
+        minWords: 100,
+        rows: 8,
+        placeholder: "Happy Hippo Co. can ...",
+        why: "There is no single right answer. Security teams often use many kinds of protection together. If one fails, another one can still stop the attack."
+      },
+
+      phishing: {
+        type: "writing",
+        num: 2,
+        title: "What rules and steps should Happy Hippo Co. use to teach its employees about the dangers of phishing emails?",
+        body: '<p>Think about how employees can recognize a phishing email, what they should do when they get one, and how often they should have training. Search online for ideas.</p>',
+        minWords: 100,
+        rows: 8,
+        placeholder: "To teach employees about phishing, ...",
+        why: "There is no single right answer. In the story, one click on a phishing email started the whole attack. That is why training people is as important as security tools."
+      },
+
+      isolate: {
+        type: "writing",
+        num: 3,
+        title: "How can a company like Happy Hippo Co. quickly isolate the affected computers, to stop ransomware from spreading?",
+        body: '<p>To <strong>isolate</strong> a computer means to disconnect it from the network. Think about how the team can find the affected computers fast, how to disconnect them, and who does each step. Search online for ideas.</p>',
+        minWords: 100,
+        rows: 8,
+        placeholder: "To stop the ransomware from spreading, ...",
+        why: "There is no single right answer. In the story, the team tried to isolate the server, but the ransomware spread first. A plan made before an attack helps a team act fast."
+      }
+    }
+  };
+})();
+</script>
+<script src="../assets/practice.js"></script>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI201 Practice: Coding and Prompt Writing | CodePath</title>
+<meta name="description" content="Free practice for the CodePath Applied AI Engineering placement assessment: a Python coding problem built up step by step, and clear prompt writing, with instant checks and hints.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../assets/practice.css">
+</head>
+<body>
+<main class="page">
+  <div class="wordmark">CODEPATH<span>*ORG</span></div>
+  <div class="eyebrow">AI201 practice &middot; Applied AI Engineering</div>
+  <h1>Coding and Prompt Writing</h1>
+  <p class="lede">The placement assessment has two parts: solving a coding problem, and writing a clear prompt for an AI tool. This page practices both, using the two examples from the AI201 candidate guide. The coding problems on this page use Python. On the assessment, you can use Python or Java for the coding problem. The first time you run code, the page loads a Python checker. This can take a few seconds.</p>
+
+  <ol class="how">
+    <li><strong>Solve</strong> each problem. Some ask you to write code. Others ask about a prompt.</li>
+    <li><strong>Check</strong> your answer. For code, the page runs small tests and shows which ones did not pass.</li>
+    <li><strong>Stuck?</strong> Get a hint. After a hint, you can see the answer.</li>
+  </ol>
+
+  <div class="note"><span class="k">About AI tools</span>While you practice, you may ask an AI tool to explain an idea, or to test a prompt you wrote. But AI tools are not allowed on the real placement assessment, so make sure you can write the code and the prompt on your own.</div>
+
+  <div data-progress></div>
+
+  <section class="section">
+    <h2>Coding: the imbalance problem</h2>
+    <p>This is the coding example from the candidate guide. It can look hard at first, but you can solve it in small steps. Most steps are one short function. Test each step on small examples before you go to the next one.</p>
+    <p>On the assessment, your code is tested on many lists, not only the example. So also try short lists, lists with negative numbers, lists with the same number more than once, and lists where the best number to remove is the first or the last one.</p>
+    <div class="clue"><span class="k">The problem</span>You are given a list of integers (whole numbers, like 7, 0, or &minus;3). The <strong>imbalance</strong> of the list is the sum of the absolute differences between all adjacent pairs. You may remove exactly one element (one item) from the list. Find the smallest possible imbalance after you remove one element.<br><br><span class="mono">Input: [4, 1, 6, 3, 8]<br>Output: 10</span><br>Removing 6 gives [4, 1, 3, 8]. Its imbalance is |4 &minus; 1| + |1 &minus; 3| + |3 &minus; 8| = 3 + 2 + 5 = 10.</div>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>Adjacent pairs.</strong> Two items are <em>adjacent</em> when they are next to each other in a list. A list with 5 items has 4 adjacent pairs. To visit each pair, loop over the indexes and stop one step before the end.</p>
+<pre>nums = [4, 1, 6, 3, 8]
+for i in range(len(nums) - 1):
+    print(nums[i], nums[i + 1])
+
+# 4 1
+# 1 6
+# 6 3
+# 3 8</pre>
+      <p><strong>Absolute difference.</strong> The absolute difference of two numbers is the distance between them. It is never negative. In math, it is written with two lines, like |1 &minus; 6|. In Python, use <code>abs()</code>.</p>
+<pre>print(abs(4 - 1))    # 3
+print(abs(1 - 6))    # 5, not -5</pre>
+      <p><strong>A new list without one item.</strong> To skip the item at index <code>i</code> without changing the original list, build a new list. You can use a loop, or you can use slices. A slice like <code>nums[a:b]</code> gives the items from index <code>a</code> up to, but not including, index <code>b</code>. If you leave out <code>a</code>, the slice starts at the beginning. If you leave out <code>b</code>, it goes to the end. So <code>nums[:i]</code> is the items before index <code>i</code>, and <code>nums[i + 1:]</code> is the items after it.</p>
+<pre>nums = [4, 1, 6, 3, 8]
+i = 2
+
+# 1. with a loop
+rest = []
+for j in range(len(nums)):
+    if j != i:
+        rest.append(nums[j])
+print(rest)    # [4, 1, 3, 8]
+
+# 2. with slices
+rest = nums[:i] + nums[i + 1:]
+print(rest)    # [4, 1, 3, 8]
+
+# nums did not change
+print(nums)    # [4, 1, 6, 3, 8]</pre>
+      <p><strong>Try every choice.</strong> The problem lets you remove any one element. A simple and correct way to solve it is to try each choice, find the result, and keep the smallest one. This is like finding the smallest number in a list.</p>
+      <p><strong>Watch out for:</strong></p>
+      <ul>
+        <li><strong>Going past the end of the list.</strong> With <code>range(len(nums))</code>, the last step reads <code>nums[i + 1]</code>, which does not exist. Python stops with an <code>IndexError</code>.</li>
+        <li><strong>Changing the list that was passed in.</strong> <code>pop()</code> and <code>remove()</code> change the list itself, so later steps use the wrong list. Build a new list instead.</li>
+        <li><strong>Skipping by value instead of by index.</strong> A list can have the same number more than once. In <code>[3, 7, 3, 1]</code>, index 2 is the second 3. Skip only the item at index <code>i</code>, not every item that has the same value.</li>
+        <li><strong>Starting the smallest value at 0.</strong> No imbalance is smaller than 0, so the answer would always be 0. Start with a real result instead.</li>
+      </ul>
+    </details>
+    <div data-item="c-hand"></div>
+    <div data-item="c-imbalance"></div>
+    <div data-item="c-without"></div>
+    <div data-item="c-full"></div>
+    <div data-item="c-ends"></div>
+  </section>
+
+  <section class="section">
+    <h2>Prompt writing: the salon voicemails</h2>
+    <p>The second part of the assessment asks you to write a <em>system prompt</em>. A system prompt is the set of instructions an AI tool gets before it reads the input. On the assessment, your prompt is tested on several inputs, not only the example. So the output needs the exact same format every time.</p>
+    <p>This page has no AI model, so it cannot run or test a prompt. Instead, the questions below check the ideas behind a strong prompt. At the end, you write your own prompt.</p>
+    <div class="clue"><span class="k">The task</span>A hair salon gets voicemails from customers who want to book an appointment. You get a written copy of each voicemail, called a <em>transcript</em>. Write a system prompt that tells an AI tool to find the customer&rsquo;s name, the date and time they want, and their phone number. The AI should return these details as a reservation record, in the same format every time.</div>
+    <div class="clue"><span class="k">Example input</span>&ldquo;Hi, this is Jordan calling &mdash; I&rsquo;d love to book an appointment on May 14th around 2pm if possible. You can reach me at 555-0192. Thanks!&rdquo;</div>
+    <div class="clue mono"><span class="k">Example output</span>Name: Jordan<br>Date: 05/14<br>Time: 2:00 PM<br>Contact: 555-0192</div>
+    <details class="review">
+      <summary>Review: key ideas</summary>
+      <p><strong>One prompt, many inputs.</strong> You write the system prompt once. It must work for every voicemail, not only the example. So your prompt should not name Jordan or May 14th. It should give rules that work for any customer.</p>
+      <p><strong>Be specific.</strong> Say what the AI will read, what to find, and what to return. &ldquo;Get the booking details&rdquo; is not specific. &ldquo;Find the customer&rsquo;s name, the date and time they want, and their phone number&rdquo; is specific.</p>
+      <p><strong>Show the exact output format.</strong> Give the labels, their order, and the format for each value. Use a <em>template</em>. A template is a pattern with an empty place for each value. Here, the parts in [ ] show what goes in each place:</p>
+<pre>Name: [the customer's name]
+Date: [MM/DD, like 05/14]
+Time: [H:MM AM or PM, like 2:00 PM]
+Contact: [phone, like 555-0192]</pre>
+      <ul>
+        <li><strong>MM/DD</strong> means two digits for the month, a slash, then two digits for the day.</li>
+        <li><strong>H:MM AM or PM</strong> means the hour, a colon, two digits for the minutes, a space, then AM or PM.</li>
+        <li>Tell the AI to return <strong>only</strong> the record. If the AI adds extra words, like &ldquo;Sure! Here is your record:&rdquo;, the output does not match the format.</li>
+      </ul>
+      <p><strong>Plan for edge cases.</strong> An <em>edge case</em> is an unusual input that can break your prompt. Ask yourself: what could go wrong? For example:</p>
+      <ul>
+        <li>A detail is missing, like no phone number.</li>
+        <li>The date is not a calendar date, like &ldquo;next Tuesday.&rdquo;</li>
+        <li>The time uses words, like &ldquo;noon&rdquo; or &ldquo;around 4 in the afternoon.&rdquo;</li>
+        <li>The voicemail has extra information, like a question or a second phone number.</li>
+      </ul>
+      <p><strong>Never guess.</strong> When a detail is missing, an AI tool may write something that sounds right but is not in the voicemail. Tell it what to write when a detail is missing or not clear.</p>
+    </details>
+
+    <div class="eyebrow">Use the format</div>
+    <div data-item="p-date"></div>
+    <div data-item="p-time"></div>
+
+    <div class="eyebrow">Compare prompts and find problems</div>
+    <div data-item="p-compare"></div>
+    <div data-item="p-missing"></div>
+    <div data-item="p-fix"></div>
+    <div data-item="p-relative"></div>
+
+    <div class="eyebrow">Write your own</div>
+    <div data-item="p-write"></div>
+  </section>
+
+  <div class="done" data-done hidden>
+    <h2>You finished all the practice problems.</h2>
+    <p>Great work. Before the assessment, remember two ideas from the candidate guide. For code, test your logic with small examples first. For prompts, think about what could go wrong.</p>
+  </div>
+
+  <p class="foot">CodePath admissions practice. This page does not affect your application.</p>
+</main>
+
+<script>
+window.PRACTICE = {
+  page: "ai201",
+  items: {
+
+    /* ---------- Coding: the imbalance problem ---------- */
+    "c-hand": {
+      type: "text",
+      num: 1,
+      title: "Find the imbalance by hand",
+      meta: "Work on paper",
+      body: '<p>Before you write code, try a small example by hand. Do not remove anything yet.</p>' +
+            '<p>What is the imbalance of <code>[4, 1, 6, 3, 8]</code>? Add up the absolute differences between each pair of numbers that are next to each other.</p>',
+      placeholder: "Type a number",
+      accept: ["16"],
+      misses: [
+        { answer: "22", feedback: "22 is the sum of the numbers in the list. The imbalance adds up the differences between numbers that are next to each other." },
+        { answer: "10", feedback: "10 is the answer to the full problem, after 6 is removed. This question asks about the whole list, with nothing removed." },
+        { answer: "-4", feedback: "Some differences are negative, like 1 &minus; 6 = &minus;5. The absolute difference is never negative, so use 5." },
+        { answer: "4", feedback: "Some differences are negative, like 1 &minus; 4 = &minus;3. The absolute difference is never negative, so use 3." },
+        { answer: "7", feedback: "7 is the biggest number minus the smallest number. The imbalance looks at each pair of numbers that are next to each other." }
+      ],
+      hints: [
+        "The adjacent pairs are 4 and 1, 1 and 6, 6 and 3, and 3 and 8.",
+        "Find the absolute difference for each pair. It is never negative: |1 &minus; 6| is 5.",
+        "The four differences are 3, 5, 3, and 5. Add them."
+      ],
+      why: "|4 &minus; 1| + |1 &minus; 6| + |6 &minus; 3| + |3 &minus; 8| = 3 + 5 + 3 + 5 = 16. Solving a small example by hand first helps you check your code later."
+    },
+
+    "c-imbalance": {
+      type: "python",
+      num: 2,
+      title: "Find the imbalance",
+      meta: "Write a function",
+      body: '<p>Write a function <code>imbalance(nums)</code> that returns the imbalance of a list: the sum of the absolute differences between all adjacent pairs.</p>' +
+            '<p>Example: <code>imbalance([4, 1, 6, 3, 8])</code> returns <code>16</code>, like your answer to question 1. A list with only one number has no pairs, so its imbalance is <code>0</code>.</p>',
+      starter: 'def imbalance(nums):\n    # your code here\n    pass\n',
+      tests: [
+        { expr: "imbalance([4, 1, 6, 3, 8])", expect: "16" },
+        { expr: "imbalance([4, 1, 3, 8])", expect: "10" },
+        { expr: "imbalance([9, 5])", expect: "4" },
+        { expr: "imbalance([2, 2, 2])", expect: "0" },
+        { expr: "imbalance([-3, 4, -1])", expect: "12" },
+        { expr: "imbalance([7])", expect: "0" }
+      ],
+      hints: [
+        "Start with <code>total = 0</code>. Then loop over the indexes with <code>for i in range(len(nums) - 1):</code>. This stops one step before the end, so <code>nums[i + 1]</code> always exists.",
+        "Inside the loop, the difference for one pair is <code>abs(nums[i] - nums[i + 1])</code>. Add it to <code>total</code>.",
+        "After the loop ends, <code>return total</code>. Check that the <code>return</code> line is not inside the loop."
+      ],
+      solution: 'def imbalance(nums):\n    total = 0\n    for i in range(len(nums) - 1):\n        total += abs(nums[i] - nums[i + 1])\n    return total\n',
+      why: "A list with n numbers has n &minus; 1 adjacent pairs, so the loop runs <code>len(nums) - 1</code> times. <code>abs()</code> makes sure no difference is negative, so the order of the two numbers does not matter. With one number, the loop does not run, and the function returns 0."
+    },
+
+    "c-without": {
+      type: "python",
+      num: 3,
+      title: "Remove one element",
+      meta: "Write a function",
+      body: '<p>Write a function <code>imbalance_without(nums, i)</code> that returns the imbalance of the list after you remove the element at index <code>i</code>.</p>' +
+            '<p>Example: <code>imbalance_without([4, 1, 6, 3, 8], 2)</code> removes the 6. The new list is <code>[4, 1, 3, 8]</code>, so the function returns <code>10</code>.</p>' +
+            '<p>Do not change the list that was passed in. Build a new list instead.</p>' +
+            '<p>This code box does not know about your code from question 2. Copy your <code>imbalance()</code> function into it first, then use it.</p>',
+      starter: 'def imbalance(nums):\n    # copy your code from question 2\n    pass\n\n\ndef imbalance_without(nums, i):\n    # make a new list without the item at index i,\n    # then return its imbalance\n    pass\n',
+      tests: [
+        { expr: "imbalance_without([4, 1, 6, 3, 8], 2)", expect: "10" },
+        { expr: "imbalance_without([4, 1, 6, 3, 8], 0)", expect: "13" },
+        { expr: "imbalance_without([4, 1, 6, 3, 8], 4)", expect: "11" },
+        { expr: "imbalance_without([5, 9], 0)", expect: "0" },
+        { expr: "imbalance_without([3, 7, 3, 1], 2)", expect: "10" },
+        { label: "the list you pass in does not change", expr: "(lambda n: [imbalance_without(n, 2), n][1])([4, 1, 6, 3, 8])", expect: "[4, 1, 6, 3, 8]" }
+      ],
+      hints: [
+        "First, make a new list with every item except the one at index <code>i</code>. The review shows two ways to do this.",
+        "With slices, the new list is <code>nums[:i] + nums[i + 1:]</code>. The first slice has the items before index <code>i</code>, and the second has the items after it.",
+        "Save the new list, for example <code>rest = nums[:i] + nums[i + 1:]</code>. Then <code>return imbalance(rest)</code>."
+      ],
+      solution: 'def imbalance(nums):\n    total = 0\n    for i in range(len(nums) - 1):\n        total += abs(nums[i] - nums[i + 1])\n    return total\n\n\ndef imbalance_without(nums, i):\n    rest = nums[:i] + nums[i + 1:]\n    return imbalance(rest)\n',
+      why: "<code>nums[:i] + nums[i + 1:]</code> makes a new list with every item except the one at index <code>i</code>. Then <code>imbalance()</code>, which you already tested, does the rest. If you use <code>pop()</code> or <code>remove()</code> instead, you change the list that was passed in, and the next removal starts from the wrong list."
+    },
+
+    "c-full": {
+      type: "python",
+      num: 4,
+      title: "Solve the full problem",
+      meta: "Write a function",
+      body: '<p>Now solve the problem from the candidate guide. Write a function <code>min_imbalance_after_removal(nums)</code>. It removes exactly one element and returns the smallest imbalance that is possible.</p>' +
+            '<p>Example: <code>min_imbalance_after_removal([4, 1, 6, 3, 8])</code> returns <code>10</code>. Removing 6 gives 10, and no removal gives less. Removing 1 or 3 also gives 10.</p>' +
+            '<p>You can assume the list always has at least 2 numbers. Copy your two functions from questions 2 and 3 into this code box first.</p>',
+      starter: 'def imbalance(nums):\n    # copy your code from question 2\n    pass\n\n\ndef imbalance_without(nums, i):\n    # copy your code from question 3\n    pass\n\n\ndef min_imbalance_after_removal(nums):\n    # try removing each element, and keep the smallest imbalance\n    pass\n',
+      tests: [
+        { expr: "min_imbalance_after_removal([4, 1, 6, 3, 8])", expect: "10" },
+        { expr: "min_imbalance_after_removal([1, 10, 2])", expect: "1" },
+        { expr: "min_imbalance_after_removal([10, 1, 2, 3])", expect: "2" },
+        { expr: "min_imbalance_after_removal([1, 2, 3, 20])", expect: "2" },
+        { expr: "min_imbalance_after_removal([5, 9])", expect: "0" },
+        { expr: "min_imbalance_after_removal([1, 3, 4, 1])", expect: "3" }
+      ],
+      hints: [
+        "Try every choice. For each index <code>i</code>, <code>imbalance_without(nums, i)</code> gives the imbalance after removing that element.",
+        "Keep the smallest result, like when you find the smallest number in a list. Start with a real result: <code>best = imbalance_without(nums, 0)</code>.",
+        "Loop with <code>for i in range(len(nums)):</code>. If <code>imbalance_without(nums, i)</code> is smaller than <code>best</code>, save it as the new <code>best</code>. After the loop, <code>return best</code>."
+      ],
+      solution: 'def imbalance(nums):\n    total = 0\n    for i in range(len(nums) - 1):\n        total += abs(nums[i] - nums[i + 1])\n    return total\n\n\ndef imbalance_without(nums, i):\n    rest = nums[:i] + nums[i + 1:]\n    return imbalance(rest)\n\n\ndef min_imbalance_after_removal(nums):\n    best = imbalance_without(nums, 0)\n    for i in range(len(nums)):\n        result = imbalance_without(nums, i)\n        if result < best:\n            best = result\n    return best\n',
+      why: "The function tries every possible removal and keeps the smallest imbalance. The loop must visit every index, including the first and the last one: in <code>[1, 2, 3, 20]</code>, the best choice is to remove the last number. Trying every choice is a clear and correct first answer. The candidate guide says that clear code is better than clever code."
+    },
+
+    "c-ends": {
+      type: "choice",
+      num: 5,
+      title: "What changes when you remove an end?",
+      meta: "Explain the idea",
+      body: '<p>The imbalance of <code>[4, 1, 6, 3, 8]</code> is 3 + 5 + 3 + 5 = 16. If you remove the first element, 4, the new imbalance is 5 + 3 + 5 = 13. Only one difference is gone.</p>' +
+            '<p>Why does removing the first or the last element change only one pair?</p>',
+      options: [
+        { html: "The first and last elements are always the smallest numbers in the list",
+          feedback: "Here the first element is 4, and 1 is smaller. The size of the number does not matter. Its position in the list does." },
+        { html: "An end element has one neighbor, so it is part of one pair", correct: true },
+        { html: "Python skips the first and last index when it loops over a list",
+          feedback: "A <code>for</code> loop visits every index. The reason is about how many pairs the end element is part of." }
+      ],
+      hints: [
+        "Count the pairs that include the 4. Then count the pairs that include the 6.",
+        "The first element has a neighbor only on its right side. A middle element has neighbors on both sides."
+      ],
+      why: "An element at the end has a neighbor on only one side, so it is part of only one adjacent pair. Removing it removes one difference. A middle element is part of two pairs. Removing it removes both of them and adds one new pair between its two neighbors. For example, removing 6 removes |1 &minus; 6| and |6 &minus; 3|, and adds |1 &minus; 3|."
+    },
+
+    /* ---------- Prompt writing: the salon voicemails ---------- */
+    "p-date": {
+      type: "text",
+      num: 1,
+      title: "Format the date",
+      meta: "Write the date",
+      body: '<p>In the example, &ldquo;May 14th&rdquo; becomes <code>Date: 05/14</code>. The format is MM/DD: two digits for the month, a slash, then two digits for the day.</p>' +
+            '<p>A customer asks for an appointment &ldquo;on June 3rd.&rdquo; What should the Date line say?</p>',
+      placeholder: "Type the date, like 05/14",
+      accept: ["06/03", "Date: 06/03"],
+      validate: function (raw) {
+        var v = String(raw).trim().replace(/^["'“”]+|["'“”]+$/g, "").replace(/^date\s*:\s*/i, "").replace(/\.$/, "").replace(/\s+/g, "");
+        if (v === "06/03") return { ok: true };
+        if (/june|jun/i.test(v)) return { state: "bad", msg: "Use numbers, not the name of the month. In the example, May 14th became 05/14." };
+        if (/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(v)) return { state: "bad", msg: "The format has only the month and the day. Do not write the year." };
+        if (/^(6|06)\/(3|03)$/.test(v)) return { state: "warn", msg: "Close. Use two digits for the month and two for the day, like 05/14. So June is 06, and the 3rd is 03." };
+        if (/^(3|03)\/(6|06)$/.test(v)) return { state: "bad", msg: "That puts the day first. In the example, 05/14 means May 14th, so the month comes first." };
+        if (/^(6|06)[-.](3|03)$/.test(v)) return { state: "bad", msg: "Use a slash (/) between the month and the day, like 05/14." };
+        return { state: "bad", msg: "That does not match the format. In the example, May 14th became 05/14. Use the same pattern for June 3rd." };
+      },
+      hints: [
+        "June is the sixth month of the year.",
+        "Use two digits for each part. When a number is below 10, add a 0 in front of it: 6 becomes 06.",
+        "Write the month first, then a slash, then the day: 06/..."
+      ],
+      why: "June is month 6, so the month is 06. The day is the 3rd, so the day is 03. The Date line is <code>Date: 06/03</code>."
+    },
+
+    "p-time": {
+      type: "text",
+      num: 2,
+      title: "Format the time",
+      meta: "Write the time",
+      body: '<p>In the example, &ldquo;around 2pm&rdquo; becomes <code>Time: 2:00 PM</code>. The format is the hour, a colon, two digits for the minutes, a space, then AM or PM.</p>' +
+            '<p>A customer asks for an appointment &ldquo;around 4 in the afternoon.&rdquo; What should the Time line say?</p>',
+      placeholder: "Type the time, like 2:00 PM",
+      accept: ["4:00 PM", "Time: 4:00 PM"],
+      validate: function (raw) {
+        var v = String(raw).trim().replace(/^["'“”]+|["'“”]+$/g, "").replace(/^time\s*:\s*/i, "").replace(/\s+/g, " ").replace(/\.$/, "").trim();
+        if (v === "4:00 PM") return { ok: true };
+        var low = v.toLowerCase().replace(/\s+/g, "").replace(/\.$/, "");
+        if (/^around/.test(low) || /^about/.test(low)) return { state: "bad", msg: "The record holds only the time. The word &ldquo;around&rdquo; is not part of the format. In the example, &ldquo;around 2pm&rdquo; became 2:00 PM." };
+        if (low === "4:00pm") {
+          if (v === "4:00PM") return { state: "warn", msg: "Close. Put a space before PM, like the example: 2:00 PM." };
+          if (/^4:00 pm$/i.test(v)) return { state: "warn", msg: "Close. Write PM in capital letters, like the example: 2:00 PM." };
+          return { state: "warn", msg: "Close. Write PM in capital letters, with a space before it, like the example: 2:00 PM." };
+        }
+        if (low === "4:00p.m") return { state: "warn", msg: "Close. The example writes PM with capital letters and no periods: 2:00 PM." };
+        if (low === "4p.m") return { state: "bad", msg: "Write the minutes too, even when they are zero. Also write PM with capital letters and no periods. The example says 2:00 PM." };
+        if (low === "04:00pm") return { state: "warn", msg: "Close. The example writes 2:00 PM, not 02:00 PM. Do not add a 0 in front of the hour." };
+        if (low === "4pm" || low === "4") return { state: "bad", msg: "Write the minutes too, even when they are zero. The example says 2:00 PM, not 2 PM." };
+        if (low === "16:00" || low === "1600") return { state: "bad", msg: "That is the 24-hour clock. The example uses AM and PM, like 2:00 PM." };
+        if (low === "4:00") return { state: "bad", msg: "Add PM. Without it, the salon cannot tell if the time is in the morning or the afternoon." };
+        if (low === "4:00am" || low === "4am") return { state: "bad", msg: "&ldquo;In the afternoon&rdquo; means PM, not AM." };
+        return { state: "bad", msg: "That does not match the format. In the example, &ldquo;around 2pm&rdquo; became 2:00 PM. Use the same pattern here." };
+      },
+      hints: [
+        "Afternoon times use PM.",
+        "The example writes the minutes, even when they are zero: 2:00, not 2.",
+        "The word &ldquo;around&rdquo; is not part of the record. In the example, &ldquo;around 2pm&rdquo; became 2:00 PM."
+      ],
+      why: "&ldquo;4 in the afternoon&rdquo; is <code>4:00 PM</code>. The record keeps only the time, in the exact format, so the word &ldquo;around&rdquo; is not part of it, like in the example."
+    },
+
+    "p-compare": {
+      type: "choice",
+      num: 3,
+      title: "Which prompt works better?",
+      meta: "Compare two prompts",
+      body: '<p>Two students wrote a system prompt for the salon task.</p>' +
+            '<div class="clue"><span class="k">Prompt A</span>Get the booking details from each voicemail.</div>' +
+            '<div class="clue"><span class="k">Prompt B</span>You will read the transcript of a voicemail left for a hair salon. Find the customer&rsquo;s name, the date and time they want, and their phone number. Reply with only these four lines, in this order:<br>Name: [name]<br>Date: [MM/DD]<br>Time: [H:MM AM or PM]<br>Contact: [phone number]<br>Do not add any other text.</div>' +
+            '<p>Which prompt will more often give a record in the exact format of the example, and why?</p>',
+      options: [
+        { html: "Prompt A, because a short prompt lets the AI choose the best format each time",
+          feedback: "That freedom is the problem. With Prompt A, the AI may write &ldquo;May 14&rdquo; one time and &ldquo;5/14/2026&rdquo; the next. The records will not match the format." },
+        { html: "They will give the same results, because the AI can see the example output",
+          feedback: "The AI sees only the prompt and the voicemail. Prompt A does not include the example output or any format rules." },
+        { html: "Prompt B, because it shows the exact format of the output", correct: true },
+        { html: "Prompt A, because long prompts confuse the AI",
+          feedback: "Clear, detailed instructions help the AI. The candidate guide says that specific prompts, with an exact output format, do better than short or unclear ones." }
+      ],
+      hints: [
+        "Read Prompt A as if you were the AI. How would you know to write the date as 05/14?",
+        "Find the parts of Prompt B that Prompt A does not have: the four details to find, the labels and their order, and the format for each value."
+      ],
+      why: "Prompt A does not say which details to find or how to write them, so the AI has to guess the format. Prompt B names the four details and gives the exact labels, their order, and the format for each value. It also says to return no other text, so every record has the same format."
+    },
+
+    "p-missing": {
+      type: "choice",
+      num: 4,
+      title: "Find the edge case",
+      meta: "What could go wrong?",
+      body: '<p>A student wrote this prompt:</p>' +
+            '<div class="clue"><span class="k">Prompt C</span>Read the voicemail transcript. Find the customer&rsquo;s name, the date and time they want, and their phone number. Reply with only these four lines:<br>Name: [name]<br>Date: [MM/DD]<br>Time: [H:MM AM or PM]<br>Contact: [phone number]</div>' +
+            '<p>Prompt C works well for Jordan&rsquo;s voicemail. Now the salon gets this voicemail:</p>' +
+            '<div class="clue"><span class="k">Voicemail</span>&ldquo;Hello, this is Sam. I want a haircut on June 3rd at 10 in the morning. Thank you!&rdquo;</div>' +
+            '<p>What problem will Prompt C most likely have with Sam&rsquo;s voicemail?</p>',
+      options: [
+        { html: "The AI will not find the name, because Sam does not say &ldquo;my name is&rdquo;",
+          feedback: "An AI tool understands &ldquo;this is Sam.&rdquo; Find a detail that is not in the voicemail at all." },
+        { html: "The Date line will be wrong, because Sam does not say the year",
+          feedback: "The format is MM/DD, so no year is needed. June 3rd becomes 06/03." },
+        { html: "Sam gives no phone number, and Prompt C has no rule for a missing detail", correct: true },
+        { html: "Nothing. Prompt C already lists all four details and the exact format",
+          feedback: "Prompt C lists the four details, but Sam&rsquo;s voicemail does not have all four. What should the Contact line say?" }
+      ],
+      hints: [
+        "Check the four details one at a time. Which ones does Sam give?",
+        "Sam gives a name, a date, and a time. Does Prompt C say what to do when a detail is not there?"
+      ],
+      why: "Sam does not give a phone number, and Prompt C has no rule for a missing detail. Without a rule, the AI has to choose what to do, and it may choose differently each time. It may skip the Contact line, write a fake number, or add a sentence. A strong prompt plans for this edge case."
+    },
+
+    "p-fix": {
+      type: "choice",
+      num: 5,
+      title: "When a detail is missing",
+      meta: "Fix the prompt",
+      body: '<p>You want to fix Prompt C so that it works for voicemails like Sam&rsquo;s. Which instruction is the best one to add?</p>',
+      options: [
+        { html: "If a detail is missing, do not write that line",
+          feedback: "Then some records have four lines and some have three. A person or a program that reads the records expects the same four lines every time." },
+        { html: "If a detail is missing, guess the most likely value",
+          feedback: "A guess is not real data. If the AI writes a phone number that is not in the voicemail, the salon may call the wrong person." },
+        { html: "If a detail is missing, write a short note that asks the customer for it",
+          feedback: "The AI only returns a record. It cannot talk to the customer, and a note does not match the record format." },
+        { html: "If a detail is missing, write Not given after its label. Do not guess", correct: true }
+      ],
+      hints: [
+        "A good rule keeps the output in the same format for every voicemail.",
+        "Which choice keeps all four lines, and never adds details that are not in the voicemail?"
+      ],
+      why: "With this rule, Sam&rsquo;s record still has four lines, and the last one is <code>Contact: Not given</code>. Every record has the same four lines, and the AI never adds a detail that is not in the voicemail. The exact words, like Not given, matter less than using the same words every time."
+    },
+
+    "p-relative": {
+      type: "choice",
+      num: 6,
+      title: "A day, not a date",
+      meta: "What could go wrong?",
+      body: '<p>The salon gets this voicemail:</p>' +
+            '<div class="clue"><span class="k">Voicemail</span>&ldquo;Hey, it&rsquo;s Marco. Can I come in next Tuesday at 3 in the afternoon? My number is 555-0147.&rdquo;</div>' +
+            '<p>The prompt asks for the date as MM/DD. Why is &ldquo;next Tuesday&rdquo; a problem?</p>',
+      options: [
+        { html: "The AI will think that Tuesday is the name of a person",
+          feedback: "An AI tool understands that Tuesday is a day of the week. The problem is which calendar date it is." },
+        { html: "The AI does not know today&rsquo;s date, so it cannot find the MM/DD", correct: true },
+        { html: "The MM/DD format cannot show a date in the next week",
+          feedback: "MM/DD can show any day of the year. The problem is that the AI does not know which day &ldquo;next Tuesday&rdquo; is." },
+        { html: "It is not a problem, because the AI can always find the right date",
+          feedback: "The AI sees only the prompt and the voicemail. Neither one says today&rsquo;s date, so the AI has no way to know which Tuesday is next." }
+      ],
+      hints: [
+        "To turn &ldquo;next Tuesday&rdquo; into MM/DD, what else do you need to know?",
+        "You need to know today&rsquo;s date. Does the AI see it anywhere in the prompt or the voicemail?"
+      ],
+      why: "&ldquo;Next Tuesday&rdquo; is not a calendar date. It depends on today&rsquo;s date, and the AI does not see it in the prompt or the voicemail. So the AI may guess, and the guess can be wrong. A strong prompt gives a clear rule for this edge case, so the AI does not guess. For example: &ldquo;If the customer does not give a calendar date, do not guess. Write Not given on the Date line.&rdquo;"
+    },
+
+    "p-write": {
+      type: "writing",
+      num: 7,
+      title: "Write your own system prompt",
+      meta: "Word count only",
+      body: '<p>Now write a full system prompt for the salon task. Use what you practiced in this section. A strong prompt:</p>' +
+            '<ul><li>says what the AI will read: the transcript of a voicemail left for a hair salon</li>' +
+            '<li>lists the four details to find</li>' +
+            '<li>shows the exact output: the four labels, in order, with the format for each value</li>' +
+            '<li>says what to write when a detail is missing or not clear, and says never to guess</li>' +
+            '<li>says to return only the record, with no other text</li></ul>' +
+            '<p>This page cannot test your prompt, because it has no AI model to run it. It only checks that you wrote at least 40 words. To test your prompt, read it as if you were the AI. Follow it step by step for the voicemails from Jordan, Sam, and Marco. Does each one give a correct record?</p>',
+      minWords: 40,
+      rows: 10,
+      placeholder: "Write your system prompt here.",
+      why: 'There is no single right answer. Compare your prompt with the list above. Here is one strong example:' +
+           '<div class="clue">You will read the transcript of a voicemail left for a hair salon. The customer wants to book an appointment. Find four details: the customer&rsquo;s name, the date they want, the time they want, and their phone number.<br><br>' +
+           'Reply with only these four lines, in this order, and no other text:<br>Name: [the name the customer gives]<br>Date: [MM/DD, like 05/14]<br>Time: [H:MM AM or PM, like 2:00 PM]<br>Contact: [the phone number, like 555-0192]<br><br>' +
+           'Rules:<br>- Use two digits for the month and the day. June 3rd is 06/03.<br>- Always write the minutes. &ldquo;Around 4 in the afternoon&rdquo; is 4:00 PM. Noon is 12:00 PM.<br>- If a detail is missing, write Not given after its label. Do not guess.<br>- If the customer gives a day but not a calendar date, like &ldquo;next Tuesday,&rdquo; the calendar date is not given. Write Not given on the Date line.</div>' +
+           'Then read your prompt one more time, and ask: what could go wrong?'
+    }
+  }
+};
+</script>
+<script src="../assets/practice.js"></script>
+</body>
+</html>

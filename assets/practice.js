@@ -123,11 +123,11 @@
       html = "The answer is: <strong>" + right.html + "</strong>. " + (item.why || "");
       var opts = document.querySelectorAll("#item-" + id + " .option");
       item.options.forEach(function (o, i) { if (o.correct && opts[i]) opts[i].classList.add("right"); });
-    } else if (item.type === "python") {
+    } else if (item.type === "python" || item.type === "javascript") {
       html = "Here is one working answer:<pre>" + esc(item.solution) + "</pre>" + (item.why || "");
     }
     slot.innerHTML = '<div class="reveal">' + html + "</div>";
-    if (item.type === "python") {
+    if (item.type === "python" || item.type === "javascript") {
       var use = make("button", "link-btn", "Put this answer in the editor");
       use.type = "button";
       use.addEventListener("click", function () {
@@ -176,6 +176,18 @@
       if (s.solved) return;
       var raw = input.value;
       if (!raw.trim()) { setFeedback(id, "warn", "Type an answer first, then press Check."); return; }
+      if (typeof item.validate === "function") {
+        var r = item.validate(raw) || {};
+        if (r.ok) {
+          input.disabled = true;
+          btn.disabled = true;
+          markSolved(id, "<strong>Correct!</strong> " + (r.msg || item.why || ""));
+        } else {
+          setFeedback(id, r.state || "bad", "<strong>Not yet.</strong> " + (r.msg || "That is not the answer. Try again."));
+          afterMiss(id);
+        }
+        return;
+      }
       var v = looseNorm(raw);
       var ok = item.accept.some(function (a) { return looseNorm(a) === v; });
       if (ok) {
@@ -351,6 +363,60 @@
     });
   }
 
+  var JS_WORKER_SRC = [
+    "function same(a, b) {",
+    "  if (a === b) return true;",
+    "  if (typeof a !== typeof b || a === null || b === null || typeof a !== 'object') return false;",
+    "  if (Array.isArray(a) !== Array.isArray(b)) return false;",
+    "  var ka = Object.keys(a), kb = Object.keys(b);",
+    "  if (ka.length !== kb.length) return false;",
+    "  return ka.every(function (k) { return Object.prototype.hasOwnProperty.call(b, k) && same(a[k], b[k]); });",
+    "}",
+    "function show(v) {",
+    "  if (v === undefined) return 'undefined';",
+    "  if (typeof v === 'function') return 'a function';",
+    "  try { return JSON.stringify(v); } catch (e) { return String(v); }",
+    "}",
+    "self.onmessage = function (e) {",
+    "  var d = e.data, res = { error: null, results: [] }, thunks;",
+    "  var quiet = { log: function () {}, info: function () {}, warn: function () {}, error: function () {} };",
+    "  try {",
+    "    var NL = String.fromCharCode(10);",
+    "    var body = d.setup + NL + d.code + NL + ';return [' + d.tests.map(function (t) { return 'function () { return (' + t.expr + '); }'; }).join(',') + '];';",
+    "    thunks = new Function('console', body)(quiet);",
+    "  } catch (err) {",
+    "    res.error = (err && err.name ? err.name + ': ' : '') + (err && err.message ? err.message : String(err));",
+    "    self.postMessage(res);",
+    "    return;",
+    "  }",
+    "  d.tests.forEach(function (t, i) {",
+    "    var r = { label: t.label || t.expr, ok: false, want: show(t.expect) };",
+    "    try {",
+    "      var got = thunks[i]();",
+    "      r.ok = same(got, t.expect);",
+    "      r.got = show(got);",
+    "    } catch (err) {",
+    "      r.got = (err && err.name ? err.name + ': ' : '') + (err && err.message ? err.message : String(err));",
+    "    }",
+    "    res.results.push(r);",
+    "  });",
+    "  self.postMessage(res);",
+    "};"
+  ].join("\n");
+
+  function runJs(code, item) {
+    return new Promise(function (resolve) {
+      var w;
+      try {
+        w = new Worker(URL.createObjectURL(new Blob([JS_WORKER_SRC], { type: "text/javascript" })));
+      } catch (err) { resolve({ fatal: String(err) }); return; }
+      var t = setTimeout(function () { w.terminate(); resolve({ timeout: true }); }, RUN_TIMEOUT_MS);
+      w.onmessage = function (e) { clearTimeout(t); w.terminate(); resolve(e.data); };
+      w.onerror = function (e) { clearTimeout(t); w.terminate(); e.preventDefault(); resolve({ error: e.message || "Error" }); };
+      w.postMessage({ setup: item.setup || "", code: code, tests: item.tests });
+    });
+  }
+
   function buildPython(id, item) {
     var card = buildShell(id, item);
     var label = make("label", "sr", "Your code for " + esc(item.title || "this question"));
@@ -375,7 +441,7 @@
       escPressed = false;
     });
     ta.addEventListener("input", function () { remember("code-" + id, ta.value); });
-    ta.addEventListener("focus", function () { getWorker().catch(function () {}); }, { once: true });
+    if (item.type === "python") ta.addEventListener("focus", function () { getWorker().catch(function () {}); }, { once: true });
     card.appendChild(label);
     card.appendChild(ta);
 
@@ -402,9 +468,10 @@
       if (s.solved || py.busy) return;
       py.busy = true;
       btn.disabled = true;
-      var loadingNote = py.worker ? "Checking your code…" : "Loading the Python checker. The first time can take a few seconds…";
+      var isJs = item.type === "javascript";
+      var loadingNote = isJs || py.worker ? "Checking your code…" : "Loading the Python checker. The first time can take a few seconds…";
       setFeedback(id, "warn", loadingNote);
-      runPython(ta.value, item.tests).then(function (res) {
+      (isJs ? runJs(ta.value, item) : runPython(ta.value, item.tests)).then(function (res) {
         if (res.timeout) {
           setFeedback(id, "bad", "<strong>Your code ran for too long.</strong> Check for a loop that never ends.");
           afterMiss(id);
@@ -538,7 +605,7 @@
   }
 
   /* ---------- boot ---------- */
-  var BUILDERS = { text: buildText, choice: buildChoice, python: buildPython, writing: buildWriting, checklist: buildChecklist };
+  var BUILDERS = { text: buildText, choice: buildChoice, python: buildPython, javascript: buildPython, writing: buildWriting, checklist: buildChecklist };
 
   document.querySelectorAll("[data-item]").forEach(function (mount) {
     var id = mount.getAttribute("data-item");
