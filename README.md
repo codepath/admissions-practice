@@ -6,11 +6,11 @@ Students reach these pages from the HackerRank tips sheet. There is intentionall
 
 | Page | Course | What it practices | How it checks |
 |---|---|---|---|
-| [`cyb101/`](cyb101/) | CYB101 | Three research puzzles, adapted from the CYB101 prework | Passcode answers |
+| [`cyb101/`](cyb101/) | CYB101 | Three research puzzles | Passcode answers |
 | [`web101/`](web101/) | WEB101 | Planning an event website: six short questions plus a wireframe | Word count only (open-ended) |
 | [`ai110/`](ai110/) | AI110 | Lists and loops, functions, and classes, adapted from the AI110 Bridge Module | Python code runs in the browser (Pyodide) plus answer checks |
-| [`cyb102/`](cyb102/) | CYB102 | Three bash command challenges plus a blue-team scenario, adapted from the CYB102 prework | Command rules; scenario answers by word count |
-| [`web102/`](web102/) | WEB102 | The JavaScript logic behind the Sea Monster Crowdfunding prework, using its game data | JavaScript code runs in the browser plus answer checks |
+| [`cyb102/`](cyb102/) | CYB102 | Three bash command challenges plus a blue-team scenario | Command rules; scenario answers by word count |
+| [`web102/`](web102/) | WEB102 | The JavaScript logic behind the Sea Monster Crowdfunding website, using its game data | JavaScript code runs in the browser plus answer checks |
 | [`ai201/`](ai201/) | AI201 | The candidate guide's coding and prompt-writing examples, built up step by step | Python code runs in the browser plus answer checks |
 
 ## How a question works

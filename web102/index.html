@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WEB102 Practice: Sea Monster JavaScript | CodePath</title>
-<meta name="description" content="Free practice for CodePath Web Development: the JavaScript behind the Sea Monster Crowdfunding prework website, with the same game data, instant checks, and hints.">
+<meta name="description" content="Free practice for the CodePath Web Development placement assessment: the JavaScript behind the Sea Monster Crowdfunding website, with instant checks and hints.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
@@ -15,7 +15,7 @@
   <div class="wordmark">CODEPATH<span>*ORG</span></div>
   <div class="eyebrow">WEB102 practice &middot; Web Development</div>
   <h1>Sea Monster JavaScript</h1>
-  <p class="lede">The WEB102 <em>prework</em> is a small project that you do before the course starts. In it, you build a website for Sea Monster Crowdfunding. <em>Crowdfunding</em> means that many people each give a small amount of money to pay for a new project. On this website, the projects are new games. On this page, you practice the JavaScript behind the website. You use the same game data, and your code runs in your browser.</p>
+  <p class="lede">This page practices JavaScript skills that help on the placement assessment. You work with a small project: a website for Sea Monster Crowdfunding. <em>Crowdfunding</em> means that many people each give a small amount of money to pay for a new project. On this website, the projects are new games. You write the JavaScript behind the website, one small step at a time. Your code runs in your browser.</p>
 
   <ol class="how">
     <li><strong>Solve</strong> each problem. Most ask you to write a short JavaScript function. Others ask you to read code.</li>
@@ -29,9 +29,9 @@
 
   <section class="section">
     <h2>The game data</h2>
-    <p>The Sea Monster website shows 11 games. In the prework, the data about these games is in a file called <code>games.js</code>. The prework also gives you <em>starter code</em>: code that is already written for you, with comments that say what to add. The starter code reads this data and makes a list of objects called <code>GAMES_JSON</code>. Here are the first two games:</p>
+    <p>The Sea Monster website shows 11 games. In the full project, the data about these games is in a file called <code>games.js</code>. The project also gives you <em>starter code</em>: code that is already written for you, with comments that say what to add. The starter code reads this data and makes a list of objects called <code>GAMES_JSON</code>. Here are the first two games:</p>
     <div class="clue mono"><span class="k">The start of GAMES_JSON</span>const GAMES_JSON = [<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Heroes Of Mythic Americas",<br>&nbsp;&nbsp;&nbsp;&nbsp;pledged: 1572,<br>&nbsp;&nbsp;&nbsp;&nbsp;goal: 10000,<br>&nbsp;&nbsp;&nbsp;&nbsp;backers: 9<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;name: "Cube Monster",<br>&nbsp;&nbsp;&nbsp;&nbsp;pledged: 29446,<br>&nbsp;&nbsp;&nbsp;&nbsp;goal: 20000,<br>&nbsp;&nbsp;&nbsp;&nbsp;backers: 321<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;// ... and 9 more games<br>];</div>
-    <p>On this page, each game has four properties. <code>name</code> is the name of the game. <code>pledged</code> is how much money people have promised to give so far, in dollars. <code>goal</code> is how much money the game needs, in dollars. <code>backers</code> is how many people have promised to give money. In the prework, each game also has a description and an image.</p>
+    <p>On this page, each game has four properties. <code>name</code> is the name of the game. <code>pledged</code> is how much money people have promised to give so far, in dollars. <code>goal</code> is how much money the game needs, in dollars. <code>backers</code> is how many people have promised to give money. In the full project, each game also has a description and an image.</p>
     <details class="review">
       <summary>Review: key ideas</summary>
       <p><strong>Objects.</strong> An object stores related values together. Each value has a name, called a <em>property</em>. Use a dot to read a property.</p>
@@ -54,7 +54,7 @@ console.log(GAMES_JSON[0].name);   // Heroes Of Mythic Americas</pre>
 <pre>const game = GAMES_JSON[0];
 const text = `${game.name} has ${game.backers} backers.`;
 console.log(text);   // Heroes Of Mythic Americas has 9 backers.</pre>
-      <p><strong>The page (the DOM).</strong> The <em>DOM</em> (Document Object Model) is how JavaScript sees the elements on a web page. In the prework, you use it to find elements, make new ones, and add them to the page. An element inside another element is called its <em>child</em>.</p>
+      <p><strong>The page (the DOM).</strong> The <em>DOM</em> (Document Object Model) is how JavaScript sees the elements on a web page. In the full project, you use it to find elements, make new ones, and add them to the page. An element inside another element is called its <em>child</em>.</p>
 <pre>const gamesContainer = document.getElementById("games-container");
 const card = document.createElement("div");   // make a new div
 card.classList.add("game-card");              // give it a class
@@ -181,10 +181,10 @@ console.log(nums);     // [20, 5, 90] (not changed)</pre>
 const [first, second] = colors;
 console.log(first);    // red
 console.log(second);   // green</pre>
-      <p>In the prework, you also put <code>...</code> inside the destructuring. Question 2 asks what it does there.</p>
+      <p>In the full project, you also put <code>...</code> inside the destructuring. Question 2 asks what it does there.</p>
       <p><strong>Watch out for:</strong></p>
       <ul>
-        <li><strong>Sorting the original list.</strong> <code>sort()</code> changes the list that you call it on. In the prework, the starter code sorts <code>GAMES_JSON</code> itself. On this page, the tests pass other lists to your function, and they check that those lists do not change. So sort a copy.</li>
+        <li><strong>Sorting the original list.</strong> <code>sort()</code> changes the list that you call it on. In the full project, the starter code sorts <code>GAMES_JSON</code> itself. On this page, the tests pass other lists to your function, and they check that those lists do not change. So sort a copy.</li>
         <li><strong>The order of <code>a</code> and <code>b</code>.</strong> <code>a - b</code> sorts from lowest to highest. <code>b - a</code> sorts from highest to lowest.</li>
       </ul>
     </details>
@@ -194,7 +194,7 @@ console.log(second);   // green</pre>
 
   <section class="section">
     <h2>Build the full website</h2>
-    <p>This last part is optional. In the prework, you build the real Sea Monster website on your computer, with the same JavaScript that you practiced here. This page cannot see your code, and this part does not count in your progress.</p>
+    <p>This last part is optional. You can build the real Sea Monster website on your computer, with the same JavaScript that you practiced here. This page cannot see your code, and this part does not count in your progress.</p>
     <div data-item="build"></div>
   </section>
 
@@ -207,7 +207,7 @@ console.log(second);   // green</pre>
 </main>
 
 <script>
-/* The 11 games from games.js in the public starter repo (codepath/web102_prework).
+/* The 11 games from games.js in the public Sea Monster starter code.
    The description and img fields are left out; every other value is exact. */
 var SEA_MONSTER_SETUP = "const GAMES_JSON = " + JSON.stringify([
   { name: "Heroes Of Mythic Americas", pledged: 1572, goal: 10000, backers: 9 },
@@ -289,7 +289,7 @@ window.PRACTICE = {
         "The string is inside backticks, so it is a template literal.",
         "In a template literal, each <code>${...}</code> is replaced with its value. What is the value of <code>game.name</code>?"
       ],
-      why: "JavaScript replaces <code>${game.name}</code> with Cube Monster and <code>${game.backers}</code> with 321. In the prework, you set a card&rsquo;s <code>innerHTML</code> to a string like this, so the page shows the game&rsquo;s details."
+      why: "JavaScript replaces <code>${game.name}</code> with Cube Monster and <code>${game.backers}</code> with 321. In the full project, you set a card&rsquo;s <code>innerHTML</code> to a string like this, so the page shows the game&rsquo;s details."
     },
 
     /* ---------- Numbers for the stats section (Challenge 4) ---------- */
@@ -299,7 +299,7 @@ window.PRACTICE = {
       title: "Total contributions",
       meta: "Write a function",
       body: '<p>Write a function <code>totalBackers(games)</code> that returns the total number of backers for all the games in the list. The website shows this number as the total number of contributions.</p>' +
-            '<p>Use <code>reduce()</code>, like the prework does. (A <code>for</code> loop also passes the tests.) If the list is empty, return <code>0</code>.</p>',
+            '<p>Use <code>reduce()</code>, like the full project does. (A <code>for</code> loop also passes the tests.) If the list is empty, return <code>0</code>.</p>',
       setup: SEA_MONSTER_SETUP,
       starter: 'function totalBackers(games) {\n    // add up the backers with reduce()\n}\n',
       tests: [
@@ -531,7 +531,7 @@ window.PRACTICE = {
     "build": {
       type: "checklist",
       title: "Build the full website on your computer (optional)",
-      body: '<p>Click the box next to each step when you finish it. The starter code is free on GitHub: <a href="https://github.com/codepath/web102_prework" target="_blank" rel="noopener">github.com/codepath/web102_prework</a>.</p>',
+      body: '<p>Click the box next to each step when you finish it. The <a href="https://github.com/codepath/web102_prework" target="_blank" rel="noopener">starter code</a> is free on GitHub.</p>',
       steps: [
         "<strong>Install the tools.</strong> <a href=\"https://code.visualstudio.com/\" target=\"_blank\" rel=\"noopener\">VS Code</a> is a free code editor. Add the <strong>Live Server</strong> extension to it. Live Server shows your website in the browser and updates the page each time you save. Also install <a href=\"https://git-scm.com/\" target=\"_blank\" rel=\"noopener\">Git</a>, a free tool that you use to download code projects and save your changes.",
         "<strong>Get the starter code.</strong> Make a free account on <a href=\"https://github.com/\" target=\"_blank\" rel=\"noopener\">GitHub</a>. Then fork the <a href=\"https://github.com/codepath/web102_prework\" target=\"_blank\" rel=\"noopener\">starter repository</a> (the project folder on GitHub). To <em>fork</em> means to make your own copy on GitHub. Then clone your copy: use Git to download it to your computer.",
