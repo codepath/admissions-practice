@@ -25,6 +25,7 @@ Answers are not hidden: this is practice, and the answer is available whenever a
 
 - `assets/practice.css` holds the shared styles. Light and dark themes follow the student's system setting.
 - `assets/practice.js` holds the shared engine. Each page declares its questions in `window.PRACTICE` and places a `<div data-item="id"></div>` where each question should appear.
+- `web102/sea-monster-starter.zip` holds the Sea Monster starter code (HTML, CSS, JavaScript, game data, and images) for the optional build steps on the WEB102 page. The files are an exact copy of CodePath's public Sea Monster starter code, without its README and .gitignore. The files sit at the top level of the zip, so unzipping it on Windows or a Mac gives one `sea-monster-starter` folder.
 
 Question types: `text` (optionally with a custom `validate` function), `choice`, `python`, `javascript`, `writing`, `checklist`. See any page's `window.PRACTICE` block for examples.
 
